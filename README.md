@@ -20,4 +20,4 @@ http://localhost:1313/
 
 `./deploy.sh "deployment commit message"`
 
-## Commit changes after deploy
+### Commit changes after deploy
