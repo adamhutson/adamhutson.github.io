@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Adam Hutson  | Cassandra Physical Data Modeling</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.59.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+    
+    <meta property="og:title" content="Cassandra Physical Data Modeling" />
+<meta property="og:description" content="The task of a data modeler is to create order out of chaos without excessively distorting the truth. The finished product should be a data model that describes the structure, manipulation and integrity aspects of the data to be stored. To properly create a data model, the modeler will transform said chaos through three distinct stages. The first is a Conceptual Data Model, then a Logical Data Model, and lastly, a Physical Data Model." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/cassandra-physical-data-modeling/" />
+<meta property="article:published_time" content="2016-06-15T00:00:00+00:00" />
+<meta property="article:modified_time" content="2016-06-15T00:00:00+00:00" />
+<meta itemprop="name" content="Cassandra Physical Data Modeling">
+<meta itemprop="description" content="The task of a data modeler is to create order out of chaos without excessively distorting the truth. The finished product should be a data model that describes the structure, manipulation and integrity aspects of the data to be stored. To properly create a data model, the modeler will transform said chaos through three distinct stages. The first is a Conceptual Data Model, then a Logical Data Model, and lastly, a Physical Data Model.">
+
+
+<meta itemprop="datePublished" content="2016-06-15T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-06-15T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1735">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cassandra Physical Data Modeling"/>
+<meta name="twitter:description" content="The task of a data modeler is to create order out of chaos without excessively distorting the truth. The finished product should be a data model that describes the structure, manipulation and integrity aspects of the data to be stored. To properly create a data model, the modeler will transform said chaos through three distinct stages. The first is a Conceptual Data Model, then a Logical Data Model, and lastly, a Physical Data Model."/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="http://adamhutson.com/" class="f3 fw2 hover-white no-underline white-90 dib">
+      Adam Hutson
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">Cassandra Physical Data Modeling</h1>
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2016-06-15T00:00:00Z">June 15, 2016</time>
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The task of a data modeler is to create order out of chaos without excessively distorting the truth.
+The finished product should be a data model that describes the structure, manipulation and integrity aspects of the data to be stored.
+To properly create a data model, the modeler will transform said chaos through three distinct stages.
+The first is a Conceptual Data Model, then a Logical Data Model, and lastly, a Physical Data Model.</p>
+</div>
+<div class="paragraph">
+<p>The first two posts, Conceptual Data Model and Logical Data Model, in this series have been published.
+This third post, the series finale, will be on the Physical data model.
+It will build upon the information learned in the Conceptual and Logical Data Model posts.
+Finally, it will  walk through the creation of a full blown physical data model for a service scheduling application to be built with a Cassandra backend.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_physical_data_model">Physical Data Model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Physical data models continue the momentum created during the design of the Conceptual and Logical data models.
+The main objective is to apply the constraints of your chosen database management system.
+The physical model will describe table structure using syntax which includes data types, keys, &amp; relationships.
+This means that an accurate use of data type is needed for entity columns.
+Typically, we also need to mind the use of reserved words to avoid them in naming entities and columns.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_diagramming_physical_data_models">Diagramming Physical Data Models</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To continue our simple example model around Person entities, we now need to determine what the data types will be for each of the columns.
+The keys should use ‘uuid’ data types as they are globally unique to ensure there will never be conflicts.
+Remember the data is completely distributed, so it prevents us from trying to use an auto-incrementing value.
+The rest of the columns are rather normal from most any DBMS.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE person (
+    person_id uuid PRIMARY KEY,
+    age int,
+    gender text,
+    name text
+);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This simple table is a great start.
+But we need to be able to show a person in relation to another person.
+The Logical model has a many-to-many table for relations.
+That works  great in relational databases as tables can be joined server-side.
+However, joins are currently not supported in Cassandra.
+So we will need to have query-based tables instead of entity-based.
+We need to think how will the data be searched and shown in the application.
+For this, we will combine our previously modeled, entity-based tables into query-centric tables.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE children_by_parent (
+    parent_id uuid,
+    child_id uuid,
+    parent_name text,
+    parent_age int,
+    parent_gender text,
+    child_name text,
+    child_age int,
+    child_gender text,
+    PRIMARY KEY (parent_id, child_id)
+) WITH CLUSTERING ORDER BY (child_id ASC);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE parents_by_child (
+    child_id uuid,
+    parent_id uuid,
+    child_name text,
+    child_age int,
+    child_gender text,
+    parent_name text,
+    parent_age int,
+    parent_gender text,
+    PRIMARY KEY (child_id, parent_id)
+) WITH CLUSTERING ORDER BY (parent_id ASC);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With the above two tables, we can search by either the parent or child unique identifier.
+Respectively we can retrieve either the associated children to that parent, or the parents to that child.
+So we have taken the spirit of the Logical Data Model and applied the constraints of Cassandra to the achieve a Physical Data Model.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_physical_data_model_for_cassandra">Physical Data Model for Cassandra</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that we’ve established what the Physical data model is, let’s write one intended for Cassandra using our earlier modeled scheduling application.</p>
+</div>
+<div class="paragraph">
+<p><strong>Client</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE client (
+    client_id uuid PRIMARY KEY,
+    gender text,
+    name text,
+    phone_number text
+);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This simple table is great if all I want to search by is the client’s unique identifier.
+But how often is someone going to actually know that value.
+Let’s create a couple similar tables that has the same information.
+But now let’s allow us to search by a value that is readily known, phone number or name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE client_by_phone_number (
+    phone_number text,
+    client_id uuid,
+    name text,
+    gender text,
+    PRIMARY KEY (phone_number, client_id)
+) WITH CLUSTERING ORDER BY (client_id ASC);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE client_by_name (
+    name text,
+    client_id uuid,
+    phone_number text,
+    gender text,
+    PRIMARY KEY (name, client_id)
+) WITH CLUSTERING ORDER BY (client_id ASC);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With either of these tables we can search by phone_number or name, respectively.
+However, those values may not be completely unique.
+There could be two clients that are using the same phone number (i.e. siblings with the same home phone).
+There could be many clients with the same name.
+We don’t want our data model to only allow a single row in these cases, so I added a compound primary key that also includes client_id.
+The end result is that if you search and there are multiple values, then you will retrieve all the records with that value.</p>
+</div>
+<div class="paragraph">
+<p><strong>Service Appointment</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE service_appointment (
+    service_appointment_id uuid PRIMARY KEY,
+    appointment_datetime timestamp,
+    client_id uuid,
+    service_id uuid,
+    service_provider_employee_id uuid,
+    service_provider_id uuid,
+    service_stated_duration int
+);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here we are again, with a table that has all of our data and does satisfy the Logical Data Model, but doesn’t make sense from a search perspective.
+Remember, Cassandra can only search on the fields in the PRIMARY KEY.
+So unless the person searching knows the unique identifier for the service appointment, they can’t do much with this table.
+We need to structure this data around common search values, like possibly appointment time, or by the client’s phone number.
+Those are likely to be needed.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE service_appointment_by_appointment_datetime (
+    appointment_datetime timestamp,
+    service_appointment_id uuid,
+    service_stated_duration int,
+    client_id uuid,
+    service_id uuid,
+    service_provider_employee_id uuid,
+    service_provider_id uuid,
+    PRIMARY KEY (appointment_datetime, service_appointment_id)
+) WITH CLUSTERING ORDER BY (service_appointment_id ASC);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This seems like a much better table.
+However, having all of those unique identifiers for the client, service, employee, etc don’t really help us out.
+With that structure, we’re going to have to take those values and re-query the database to retrieve that info.
+Not good from a performance stand point.
+No reason to make multiple round trips on the network to the database if we can prevent it.
+Let’s add that information directly to this table.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE service_appointment_by_appointment_datetime (
+    service_appointment_datetime timestamp,
+    service_appointment_id uuid,
+    service_appointment_stated_duration int,
+    client_id uuid,
+    client_name text,
+    client_age int,
+    client_gender text,
+    client_phone_number text,
+    service_id uuid,
+    service_name text,
+    service_suggested_duration int,
+    service_type text,
+    service_description text,
+    service_provider_employee_id uuid,
+    service_provider_employee_name text,
+    service_provider_employee_working_hours text,
+    service_provider_id uuid,
+    service_provider_name text,
+    service_provider_phone_number text,
+    PRIMARY KEY (appointment_datetime, service_appointment_id)
+) WITH CLUSTERING ORDER BY (service_appointment_id ASC);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice, we still have the basic query structure in place, we’ve just added more information to the row so that we have everything we need without searching more tables.
+This is a common denormalization trick from data warehousing.
+Let’s create a similar table that allows searching by the client’s phone number.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE service_appointment_by_client_phone_number (
+    service_appointment_datetime timestamp,
+    service_appointment_id uuid,
+    service_appointment_stated_duration int,
+    client_id uuid,
+    client_name text,
+    client_age int,
+    client_gender text,
+    client_phone_number text,
+    service_id uuid,
+    service_name text,
+    service_suggested_duration int,
+    service_type text,
+    service_description text,
+    service_provider_employee_id uuid,
+    service_provider_employee_name text,
+    service_provider_employee_working_hours text,
+    service_provider_id uuid,
+    service_provider_name text,
+    service_provider_phone_number text,
+    PRIMARY KEY (client_phone_number, appointment_datetime, service_appointment_id)
+) WITH CLUSTERING ORDER BY (appointment_datetime DESC, service_appointment_id ASC);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>But wait, what is going on there with the ORDER BY statement?
+This table will allow for all client’s appointments to be retrieved with their phone number.
+In order to show all of the appointments in a logical manner, the ORDER BY has them listed in descending order, denoted by the DESC.
+This will give us the latest appointment time for the client.
+Also the service appointment unique identifier is included to guarantee uniqueness.</p>
+</div>
+<div class="paragraph">
+<p><strong>Service Provider</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE service_provider (
+    service_provider_id uuid PRIMARY KEY,
+    name text,
+    phone_number text
+);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By now, you should be getting the hang of what I’m doing here.
+Take the table that is defined in the Logical Data Model, and switching the columns around to satisfy different search paths.
+Nothing really too exciting, just more use cases to search by.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE service_provider_by_name (
+    name text,
+    service_provider_id uuid,
+    phone_number text,
+    PRIMARY KEY (name, service_provider_id)
+) WITH CLUSTERING ORDER BY (service_provider_id ASC);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE service_provider_by_phone_number (
+    phone_number text,
+    service_provider_id uuid,
+    name text,
+    PRIMARY KEY (phone_number, service_provider_id)
+) WITH CLUSTERING ORDER BY (service_provider_id ASC);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Services &amp; Service Provider Employees</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE service (
+    service_id uuid PRIMARY KEY,
+    description text,
+    name text,
+    service_provider_id uuid,
+    suggested_duration int,
+    type text
+);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE service_provider_employee (
+    service_provider_employee_id uuid PRIMARY KEY,
+    name text,
+    service_provider_id uuid,
+    working_hours text
+);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This one is an interesting case, because these two tables have what’s called a many-to-many table in the relational world.
+That means that there are many services that a service provider employee can perform and that a service may be performed by many service provider employees.
+We have to be careful when implementing this into the physical data model, so that we don’t restrict this relationship.
+This use case would need to be, “What employees can perform a particular service?” and “What services can a particular employee perform?”</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE service_provider_employee_by_service_name (
+    service_id uuid,
+    service_description text,
+    service_name text,
+    service_provider_id uuid,
+    service_suggested_duration int,
+    service_type text,
+    service_provider_employee_id uuid PRIMARY KEY,
+    service_provider_employee_name text,
+    service_provider_employee_working_hours text,
+    PRIMARY KEY (service_name, service_provider_employee_name, service_provider_employee_id)
+) WITH CLUSTERING ORDER BY (service_provider_employee_name ASC, service_provider_employee_id ASC);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE services_by_service_provider_employee_name (
+    service_provider_employee_id uuid,
+    service_provider_employee_name text,
+    service_provider_employee_working_hours text,
+    service_id uuid,
+    service_description text,
+    service_name text,
+    service_provider_id uuid,
+    service_suggested_duration int,
+    service_type text,
+    PRIMARY KEY (service_provider_employee_name, service_name, service_id)
+) WITH CLUSTERING ORDER BY (service_name ASC, service_id ASC);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_final_physical_data_model">Final Physical Data Model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the other posts in this series, I’ve included a combined view of the post’s particular data model.
+This post on the Physical data model is different though.
+The final product of the Physical data model is just a script.
+This script should be runnable on your targeted Cassandra platform.
+I say targeted, because every version of Cassandra is slightly different, with features being added and deprecated.
+Ideally, the script will be idempotent, meaning that you can run it multiple times without error and the output is the same as the first run.
+The final product of this post is a single script, located here, for you to download, examine, run, and learn from.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary">Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is the conclusion to my series on Data Modeling.
+I’ve taken you through the three steps of constructing a proper data model.
+You should understand the differences between the Conceptual, Logical, and Physical Data Models now.
+Also, you should have a pretty good grasp on how to construct a solid Physical Data Model that is designed for Cassandra.
+If you’re still interested in Data Modeling, please check out my Cassandra Data Model Basics post.
+Also, don’t miss the things you want to know when upgrading your model to Cassandra version 3.0.</p>
+</div>
+</div>
+</div>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6">
+      
+      
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://adamhutson.com/" >
+    &copy; 2019 Adam Hutson
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
