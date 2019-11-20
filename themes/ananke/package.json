@@ -22,5 +22,9 @@
   "homepage": "https://github.com/theNewDynamic/thenewdynamic.com#readme",
   "devDependencies": {
     "auto-changelog": "^1.16.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "lodash.template": "^4.5.0"
   }
 }
