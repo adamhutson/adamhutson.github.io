@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Adam Hutson  | How To Create a Cassandra Cluster in AWS Part 1</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.59.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+    
+    <meta property="og:title" content="How To Create a Cassandra Cluster in AWS Part 1" />
+<meta property="og:description" content="In this post, I’ll walk you through creating a Cassandra cluster in Amazon’s Web Services. The first thing you’ll need to do is sign in to your Amazon Console. If you don’t have one, create an account. Once you’re logged in, from the dashboard, click on the EC2 logo, under the Compute section.
+   This is Amazon’s Elastic Compute Cloud where you can launch virtual servers, known as an Amazon EC2 instance." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/how-to-create-a-cassandra-cluster-in-aws-part-1/" />
+<meta property="article:published_time" content="2015-12-23T00:00:00+00:00" />
+<meta property="article:modified_time" content="2015-12-23T00:00:00+00:00" />
+<meta itemprop="name" content="How To Create a Cassandra Cluster in AWS Part 1">
+<meta itemprop="description" content="In this post, I’ll walk you through creating a Cassandra cluster in Amazon’s Web Services. The first thing you’ll need to do is sign in to your Amazon Console. If you don’t have one, create an account. Once you’re logged in, from the dashboard, click on the EC2 logo, under the Compute section.
+   This is Amazon’s Elastic Compute Cloud where you can launch virtual servers, known as an Amazon EC2 instance.">
+
+
+<meta itemprop="datePublished" content="2015-12-23T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2015-12-23T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="616">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How To Create a Cassandra Cluster in AWS Part 1"/>
+<meta name="twitter:description" content="In this post, I’ll walk you through creating a Cassandra cluster in Amazon’s Web Services. The first thing you’ll need to do is sign in to your Amazon Console. If you don’t have one, create an account. Once you’re logged in, from the dashboard, click on the EC2 logo, under the Compute section.
+   This is Amazon’s Elastic Compute Cloud where you can launch virtual servers, known as an Amazon EC2 instance."/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="http://adamhutson.com/" class="f3 fw2 hover-white no-underline white-90 dib">
+      Adam Hutson
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">How To Create a Cassandra Cluster in AWS Part 1</h1>
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2015-12-23T00:00:00Z">December 23, 2015</time>
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this post, I’ll walk you through creating a Cassandra cluster in Amazon’s Web Services.
+The first thing you’ll need to do is sign in to your Amazon Console.
+If you don’t have one, create an account.
+Once you’re logged in, from the dashboard, click on the EC2 logo, under the Compute section.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ec2.jpg" alt="ec2">
+</div>
+</div>
+<div class="paragraph">
+<p>This is Amazon’s Elastic Compute Cloud where you can launch virtual servers, known as an Amazon EC2 instance.
+From the EC2 Dashboard, you will notice that you have multiple regions to choose from in the upper right corner of the dashboard.
+Since I’m U.S. based, I’ve selected the N. Virginia based data center.
+Now we’re going to start the Launch Instance wizard.
+Right in the middle of the screen, you should see a large “Launch Instance” button under the Create Instance section.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_the_virtual_machines">Create the Virtual Machines</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are many ways to select an Operating System for your virtual server.
+Some are provided via an Amazon Machine Image (AMI), others are provided from the Community, or you can even provide your own Image.
+For this tutorial, I’m looking to run Ubuntu on an instance with a small local SSD.</p>
+</div>
+<div class="paragraph">
+<p>For that I’ll select the Quick Start menu,</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/create-a-virtual-machine.jpg" alt="create a virtual machine">
+</div>
+</div>
+<div class="paragraph">
+<p>and chose the Ubuntu Server option.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/select-ubuntu.jpg" alt="select ubuntu">
+</div>
+</div>
+<div class="paragraph">
+<p>The next step is to select an instance size.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/choose-an-instance-type.jpg" alt="choose an instance type">
+</div>
+</div>
+<div class="paragraph">
+<p>I’m wanting something that uses local SSDs and not EBS.
+I could try to use the free tier and get a super tiny instance, but it doesn’t really demonstrate anything that you’d actually do in the real world.
+From the available instance sizes, I’m looking for something not too expensive or beefy, since this is just a tutorial.
+I’ve decided that an m3.large is small enough to demonstrate what I need and still big enough to run without any issues.</p>
+</div>
+<div class="paragraph">
+<p>Choose the m3.large instance type.  This virtual server has 2 cores, 7.5G RAM &amp; a 32G SSD with moderate network performance.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/m3-large.png" alt="m3 large">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 3</strong> is where you can decide how many of this these instances you wish to create and which availability zone, if you want a VPC, etc.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/configure-instance-details.jpg" alt="configure instance details">
+</div>
+</div>
+<div class="paragraph">
+<p>For this tutorial, I think a three node cluster will suffice.
+I’ve changed the Number of Instances input from 1 to 3 and left the rest as the defaults.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/3-node-cluster.jpg" alt="3 node cluster">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 4</strong> is for adding any additional storage.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/add-storage.jpg" alt="add storage">
+</div>
+</div>
+<div class="paragraph">
+<p>This tutorial doesn’t really have any need for additional storage, so I’m going to pass over this selection, leaving it all as the defaults.</p>
+</div>
+<div class="paragraph">
+<p><strong>Step 5</strong> is for adding tags to your instance.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/tag-instances.jpg" alt="tag instances"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Step 6</strong> is for adding a Security Group around your instances.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/configure-security-groups.jpg" alt="configure security groups">
+</div>
+</div>
+<div class="paragraph">
+<p>I’ve updated the Security Group name &amp; description to reflect what I’m doing.
+I also added four inbound rules for the ports that Cassandra requires.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/inbound-rules.jpg" alt="inbound rules">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 7</strong> allows you to review all the choices you’ve made and make any changes.
+If you’re satisfied with what you’ve selected, then you can press the Launch button and watch your virtual servers get created.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/review-instance-launch.jpg" alt="review instance launch">
+</div>
+</div>
+<div class="paragraph">
+<p>After you press the Launch button, AWS will prompt you to add a key pair to be used when you want to log into your new instances.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/select-key-pair-1.jpg" alt="select key pair 1">
+</div>
+</div>
+<div class="paragraph">
+<p>For the sake of the tutorial, I’ll create a new key pair and download the private key file.
+If you lose this private key, you’ll never be able to access these instances and will need to terminate them and start over.
+So don’t forget to click the Download Key Pair button and keep that .pem file someplace safe.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/download-key-pair.jpg" alt="download key pair">
+</div>
+</div>
+<div class="paragraph">
+<p>Now I’ve pressed the Launch Instances button and my machines are being created.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/launch-status.jpg" alt="launch status">
+</div>
+</div>
+<div class="paragraph">
+<p>So now I’m on the clock and being charged by Amazon for my use of these 3 machines.</p>
+</div>
+<div class="paragraph">
+<p>In part 2 of this two-part tutorial, We will install &amp; configure Cassandra on our cluster.</p>
+</div>
+</div>
+</div>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6">
+      
+      
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://adamhutson.com/" >
+    &copy; 2019 Adam Hutson
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
