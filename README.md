@@ -15,3 +15,9 @@
 ### View Hugo locally
 
 http://localhost:1313/
+
+## Deploy Changes
+
+`./deploy.sh "deployment commit message"`
+
+## Commit changes after deploy
