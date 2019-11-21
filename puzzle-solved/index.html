@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Adam Hutson">
+    <meta name="description" content="Adam Hutson&#39;s personal website">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Puzzle Solved"/>
+<meta name="twitter:description" content="I have been really getting into RSS feeds lately and have subscribed to alot of ones that interest me. I personally have been using the Google Reader on the iGoogle homepage. It&#8217;s a neat way to keep tabs on my varied readings. One that caught my eye was a challenge by Pinal Dave. Pinal challenged his readers to solve a puzzle that would return the size of each index for a speficied table."/>
+
+    <meta property="og:title" content="Puzzle Solved" />
+<meta property="og:description" content="I have been really getting into RSS feeds lately and have subscribed to alot of ones that interest me. I personally have been using the Google Reader on the iGoogle homepage. It&#8217;s a neat way to keep tabs on my varied readings. One that caught my eye was a challenge by Pinal Dave. Pinal challenged his readers to solve a puzzle that would return the size of each index for a speficied table." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/puzzle-solved/" />
+<meta property="article:published_time" content="2009-11-20T00:00:00+00:00" />
+<meta property="article:modified_time" content="2009-11-20T00:00:00+00:00" />
+
+
+    
+      <base href="http://adamhutson.com/puzzle-solved/">
+    
+    <title>
+  Puzzle Solved · Adam Hutson
+</title>
+
+    
+      <link rel="canonical" href="http://adamhutson.com/puzzle-solved/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="http://adamhutson.com/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="http://adamhutson.com/css/coder-inverted.min.9e2c96f8fa9eaf53cac36cea2d330e990ea903e02e7b2843e916e09da8724be4.css" integrity="sha256-niyW&#43;Pqer1PKw2zqLTMOmQ6pA&#43;AueyhD6RbgnahyS&#43;Q=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="http://adamhutson.com/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="http://adamhutson.com/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.59.1" />
+  </head>
+
+  <body class=" inverted">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="http://adamhutson.com/">
+      Adam Hutson
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://adamhutson.com/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://adamhutson.com/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://adamhutson.com/resume/">Resume</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://adamhutson.com/talks/">Talks</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://adamhutson.com/contact/">Contact</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Puzzle Solved</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2009-11-20T00:00:00Z'>
+                November 20, 2009
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              2 minutes read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        <div class="paragraph">
+<p>I have been really getting into RSS feeds lately and have subscribed to alot of ones that interest me.
+I personally have been using the Google Reader on the iGoogle homepage.
+It&#8217;s a neat way to keep tabs on my varied readings.
+One that caught my eye was a challenge by Pinal Dave.
+Pinal challenged his readers to solve a puzzle that would return the size of each index for a speficied table.</p>
+</div>
+<div class="paragraph">
+<p>He started with a simple sp_spaceused [tableName] command that returned the index_size of the table and a selection from sys.indexes that returned a list of all of the indexes on said table.
+But it was up to his readers to figure out how to get the index_size of each index, so that the sum of all of them would add up to teh result from sp_spaceused.
+Read the article to follow along.
+My answer is the 7th down (mine is simpler and suprising different from the other answers).
+Pinal will post the solution with due credit on his blog.
+Hopefully, I did well, seeing that he has almost 11 million readers.</p>
+</div>
+<div class="paragraph">
+<p>Here is a quick overview of the puzzle:</p>
+</div>
+<div class="paragraph">
+<p>My answer was:
+DECLARE
+      @objname nvarchar(776),
+      @id int</p>
+</div>
+<div class="paragraph">
+<p>SELECT
+      @objname = 'TableToExamine',
+      @id = object_id(@objname)</p>
+</div>
+<div class="paragraph">
+<p>SELECT
+      i.*,
+      CASE
+            WHEN ps.usedpages &gt; ps.pages THEN (ps.usedpages - ps.pages)
+            ELSE 0
+      END * 8 indexsize
+FROM sys.indexes i
+INNER JOIN (
+      SELECT
+            OBJECT_ID,
+            index_id,
+            SUM (used_page_count) usedpages,
+            SUM (
+                  CASE
+                        WHEN (index_id &lt; 2) THEN (in_row_data_page_count + lob_used_page_count + row_overflow_used_page_count)
+                        ELSE lob_used_page_count + row_overflow_used_page_count
+                  END
+            )pages
+      FROM sys.dm_db_partition_stats
+      WHERE object_id = @id
+      GROUP BY object_id, index_id
+) ps on i.index_id = ps.index_id
+WHERE i.object_id = @id</p>
+</div>
+<div class="paragraph">
+<p>Well, that wasn&#8217;t my exact answer.
+I had a variable declaration that I really didn&#8217;t need, but hey, I did it in like 5 mins.
+So this version is a little cleaner. :)</p>
+</div>
+<div class="paragraph">
+<p>ENJOY!  And in the spirit of fun, See if you can do it better!</p>
+</div>
+
+      </div>
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>Jump and grow wings on the way down</p>
+    
+    
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

@@ -83,6 +83,181 @@
   </url>
   
   <url>
+    <loc>http://adamhutson.com/simple-cassandra-instance-in-aws-ec2/</loc>
+    <lastmod>2014-10-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/house-of-the-rising-scrum/</loc>
+    <lastmod>2014-10-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/the-times-they-are-a-changing/</loc>
+    <lastmod>2014-09-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/presentation-on-alternatives-to-relational-databases/</loc>
+    <lastmod>2011-11-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/sql-presentation-for-springfield-net-users-group/</loc>
+    <lastmod>2011-06-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/pci-training-equals-lessons-in-how-to-hack/</loc>
+    <lastmod>2011-03-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/new-addition-to-the-family/</loc>
+    <lastmod>2011-03-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/won-a-pluralsight-subscription/</loc>
+    <lastmod>2010-11-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/where-is-the-immediate-window-in-visual-studio/</loc>
+    <lastmod>2010-07-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/turning-a-new-leaf-with-a-career-change/</loc>
+    <lastmod>2010-07-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/too-many-todos-and-not-enough-dones/</loc>
+    <lastmod>2010-06-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/autorecover-sql-scripts/</loc>
+    <lastmod>2010-06-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/free-ebook-defensive-database-programming/</loc>
+    <lastmod>2010-06-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/passed-my-first-microsoft-certification-exam/</loc>
+    <lastmod>2010-05-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/the-book-of-red-gate/</loc>
+    <lastmod>2010-05-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/free-ebook-introducing-microsoft-sql-server-2008-r2/</loc>
+    <lastmod>2010-04-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/using-feedburner-now/</loc>
+    <lastmod>2010-04-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/first-microsoft-certification-exam/</loc>
+    <lastmod>2010-04-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/seconds-into-ddhhmmss-format/</loc>
+    <lastmod>2010-02-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/free-ebook-how-to-become-an-exceptional-dba/</loc>
+    <lastmod>2010-01-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/free-ebook-dont-just-roll-the-dice/</loc>
+    <lastmod>2009-12-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/free-ebook-getting-real/</loc>
+    <lastmod>2009-12-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/money-vs-decimal-data-types-in-sql-server/</loc>
+    <lastmod>2009-11-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/puzzle-solved/</loc>
+    <lastmod>2009-11-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/nullabitlity-and-default-constraint-behavior/</loc>
+    <lastmod>2009-11-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/golfing-with-my-son-in-november/</loc>
+    <lastmod>2009-11-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/playing-in-the-leaves-at-the-nature-center/</loc>
+    <lastmod>2009-11-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/sql-server-memory-management/</loc>
+    <lastmod>2009-10-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/implicit-conversion-of-fast-forward-cursor-to-static-cursor/</loc>
+    <lastmod>2009-10-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/finding-the-last-reboot-time-of-a-sql-server/</loc>
+    <lastmod>2009-10-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/avoid-cursors-rewrite-into-while-loops/</loc>
+    <lastmod>2009-10-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/goal-explore-more-solutions-than-just-winforms/</loc>
+    <lastmod>2009-10-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/free-iphone-development-training/</loc>
+    <lastmod>2009-10-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/personal-branding/</loc>
+    <lastmod>2009-10-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/what-makes-up-a-good-blog/</loc>
+    <lastmod>2009-10-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://adamhutson.com/about/</loc>
   </url>
   
