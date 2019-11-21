@@ -83,8 +83,7 @@
   </url>
   
   <url>
-    <loc>http://adamhutson.com/resume/</loc>
-    <priority>0</priority>
+    <loc>http://adamhutson.com/about/</loc>
   </url>
   
   <url>
@@ -92,7 +91,23 @@
   </url>
   
   <url>
+    <loc>http://adamhutson.com/contact/</loc>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/resume/</loc>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/series/</loc>
+  </url>
+  
+  <url>
     <loc>http://adamhutson.com/tags/</loc>
+  </url>
+  
+  <url>
+    <loc>http://adamhutson.com/talks/</loc>
   </url>
   
 </urlset>

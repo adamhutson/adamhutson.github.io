@@ -1,30 +1,19 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en">
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    
-    <title>Adam Hutson  | How To Create a Cassandra Cluster in AWS Part 1</title>
-    <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.1" />
-    
-    
-      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    
-    
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
-    
+    <meta name="author" content="Adam Hutson">
+    <meta name="description" content="Adam Hutson&#39;s personal website">
+    <meta name="keywords" content="blog,developer,personal">
 
-    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How To Create a Cassandra Cluster in AWS Part 1"/>
+<meta name="twitter:description" content="In this post, I’ll walk you through creating a Cassandra cluster in Amazon’s Web Services. The first thing you’ll need to do is sign in to your Amazon Console. If you don’t have one, create an account. Once you’re logged in, from the dashboard, click on the EC2 logo, under the Compute section.
+   This is Amazon’s Elastic Compute Cloud where you can launch virtual servers, known as an Amazon EC2 instance."/>
 
-    
-      
-    
-
-    
-    
     <meta property="og:title" content="How To Create a Cassandra Cluster in AWS Part 1" />
 <meta property="og:description" content="In this post, I’ll walk you through creating a Cassandra cluster in Amazon’s Web Services. The first thing you’ll need to do is sign in to your Amazon Console. If you don’t have one, create an account. Once you’re logged in, from the dashboard, click on the EC2 logo, under the Compute section.
    This is Amazon’s Elastic Compute Cloud where you can launch virtual servers, known as an Amazon EC2 instance." />
@@ -32,82 +21,116 @@
 <meta property="og:url" content="http://adamhutson.com/how-to-create-a-cassandra-cluster-in-aws-part-1/" />
 <meta property="article:published_time" content="2015-12-23T00:00:00+00:00" />
 <meta property="article:modified_time" content="2015-12-23T00:00:00+00:00" />
-<meta itemprop="name" content="How To Create a Cassandra Cluster in AWS Part 1">
-<meta itemprop="description" content="In this post, I’ll walk you through creating a Cassandra cluster in Amazon’s Web Services. The first thing you’ll need to do is sign in to your Amazon Console. If you don’t have one, create an account. Once you’re logged in, from the dashboard, click on the EC2 logo, under the Compute section.
-   This is Amazon’s Elastic Compute Cloud where you can launch virtual servers, known as an Amazon EC2 instance.">
 
-
-<meta itemprop="datePublished" content="2015-12-23T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2015-12-23T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="616">
-
-
-
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="How To Create a Cassandra Cluster in AWS Part 1"/>
-<meta name="twitter:description" content="In this post, I’ll walk you through creating a Cassandra cluster in Amazon’s Web Services. The first thing you’ll need to do is sign in to your Amazon Console. If you don’t have one, create an account. Once you’re logged in, from the dashboard, click on the EC2 logo, under the Compute section.
-   This is Amazon’s Elastic Compute Cloud where you can launch virtual servers, known as an Amazon EC2 instance."/>
-
-  </head>
-
-  <body class="ma0 avenir bg-near-white">
 
     
-   
-  
+      <base href="http://adamhutson.com/how-to-create-a-cassandra-cluster-in-aws-part-1/">
+    
+    <title>
+  How To Create a Cassandra Cluster in AWS Part 1 · Adam Hutson
+</title>
 
-  <header>
-    <div class="bg-black">
-      <nav class="pv3 ph3 ph4-ns" role="navigation">
-  <div class="flex-l justify-between items-center center">
-    <a href="http://adamhutson.com/" class="f3 fw2 hover-white no-underline white-90 dib">
+    
+      <link rel="canonical" href="http://adamhutson.com/how-to-create-a-cassandra-cluster-in-aws-part-1/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="http://adamhutson.com/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="http://adamhutson.com/css/coder-inverted.min.9e2c96f8fa9eaf53cac36cea2d330e990ea903e02e7b2843e916e09da8724be4.css" integrity="sha256-niyW&#43;Pqer1PKw2zqLTMOmQ6pA&#43;AueyhD6RbgnahyS&#43;Q=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="http://adamhutson.com/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="http://adamhutson.com/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.59.1" />
+  </head>
+
+  <body class=" inverted">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="http://adamhutson.com/">
       Adam Hutson
     </a>
-    <div class="flex-l items-center">
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
       
-
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://adamhutson.com/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://adamhutson.com/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://adamhutson.com/resume/">Resume</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://adamhutson.com/talks/">Talks</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://adamhutson.com/contact/">Contact</a>
+          </li>
+        
       
       
-
-
-
-
-
-
-
-
-
-
-
-    </div>
-  </div>
+    </ul>
+  </section>
 </nav>
 
-    </div>
-  </header>
 
-
-
-    <main class="pb7" role="main">
-      
-  
-  <article class="flex-l flex-wrap justify-between mw8 center ph3">
-
-    <header class="mt4 w-100">
-      <p class="f6 b helvetica tracked">
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">How To Create a Cassandra Cluster in AWS Part 1</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2015-12-23T00:00:00Z'>
+                December 23, 2015
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              3 minutes read
+            </span>
+          </div>
           
-        POSTS
-      </p>
-      <h1 class="f1 athelas mb1">How To Create a Cassandra Cluster in AWS Part 1</h1>
-      
-      
-      <time class="f6 mv4 dib tracked" datetime="2015-12-23T00:00:00Z">December 23, 2015</time>
-      
-      
-    </header>
+          
+        </div>
+      </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="preamble">
+      <div>
+        <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>In this post, I’ll walk you through creating a Cassandra cluster in Amazon’s Web Services.
@@ -117,7 +140,7 @@ Once you’re logged in, from the dashboard, click on the EC2 logo, under the Co
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/ec2.jpg" alt="ec2">
+<img src="http://adamhutson.com/images/ec2.jpg" alt="ec2">
 </div>
 </div>
 <div class="paragraph">
@@ -142,7 +165,7 @@ For this tutorial, I’m looking to run Ubuntu on an instance with a small local
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/create-a-virtual-machine.jpg" alt="create a virtual machine">
+<img src="http://adamhutson.com/images/create-a-virtual-machine.jpg" alt="create a virtual machine">
 </div>
 </div>
 <div class="paragraph">
@@ -150,7 +173,7 @@ For this tutorial, I’m looking to run Ubuntu on an instance with a small local
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/select-ubuntu.jpg" alt="select ubuntu">
+<img src="http://adamhutson.com/images/select-ubuntu.jpg" alt="select ubuntu">
 </div>
 </div>
 <div class="paragraph">
@@ -158,7 +181,7 @@ For this tutorial, I’m looking to run Ubuntu on an instance with a small local
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/choose-an-instance-type.jpg" alt="choose an instance type">
+<img src="http://adamhutson.com/images/choose-an-instance-type.jpg" alt="choose an instance type">
 </div>
 </div>
 <div class="paragraph">
@@ -172,7 +195,7 @@ I’ve decided that an m3.large is small enough to demonstrate what I need and s
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/m3-large.png" alt="m3 large">
+<img src="http://adamhutson.com/images/m3-large.png" alt="m3 large">
 </div>
 </div>
 <div class="paragraph">
@@ -180,7 +203,7 @@ I’ve decided that an m3.large is small enough to demonstrate what I need and s
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/configure-instance-details.jpg" alt="configure instance details">
+<img src="http://adamhutson.com/images/configure-instance-details.jpg" alt="configure instance details">
 </div>
 </div>
 <div class="paragraph">
@@ -189,7 +212,7 @@ I’ve changed the Number of Instances input from 1 to 3 and left the rest as th
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/3-node-cluster.jpg" alt="3 node cluster">
+<img src="http://adamhutson.com/images/3-node-cluster.jpg" alt="3 node cluster">
 </div>
 </div>
 <div class="paragraph">
@@ -197,7 +220,7 @@ I’ve changed the Number of Instances input from 1 to 3 and left the rest as th
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/add-storage.jpg" alt="add storage">
+<img src="http://adamhutson.com/images/add-storage.jpg" alt="add storage">
 </div>
 </div>
 <div class="paragraph">
@@ -214,7 +237,7 @@ I’ve changed the Number of Instances input from 1 to 3 and left the rest as th
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/configure-security-groups.jpg" alt="configure security groups">
+<img src="http://adamhutson.com/images/configure-security-groups.jpg" alt="configure security groups">
 </div>
 </div>
 <div class="paragraph">
@@ -223,7 +246,7 @@ I also added four inbound rules for the ports that Cassandra requires.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/inbound-rules.jpg" alt="inbound rules">
+<img src="http://adamhutson.com/images/inbound-rules.jpg" alt="inbound rules">
 </div>
 </div>
 <div class="paragraph">
@@ -232,7 +255,7 @@ If you’re satisfied with what you’ve selected, then you can press the Launch
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/review-instance-launch.jpg" alt="review instance launch">
+<img src="http://adamhutson.com/images/review-instance-launch.jpg" alt="review instance launch">
 </div>
 </div>
 <div class="paragraph">
@@ -240,7 +263,7 @@ If you’re satisfied with what you’ve selected, then you can press the Launch
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/select-key-pair-1.jpg" alt="select key pair 1">
+<img src="http://adamhutson.com/images/select-key-pair-1.jpg" alt="select key pair 1">
 </div>
 </div>
 <div class="paragraph">
@@ -250,7 +273,7 @@ So don’t forget to click the Download Key Pair button and keep that .pem file 
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/download-key-pair.jpg" alt="download key pair">
+<img src="http://adamhutson.com/images/download-key-pair.jpg" alt="download key pair">
 </div>
 </div>
 <div class="paragraph">
@@ -258,7 +281,7 @@ So don’t forget to click the Download Key Pair button and keep that .pem file 
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/launch-status.jpg" alt="launch status">
+<img src="http://adamhutson.com/images/launch-status.jpg" alt="launch status">
 </div>
 </div>
 <div class="paragraph">
@@ -269,49 +292,39 @@ So don’t forget to click the Download Key Pair button and keep that .pem file 
 </div>
 </div>
 </div>
-<ul class="pa0">
-  
-</ul>
-<div class="mt6">
-      
-      
+
       </div>
-    </section>
 
-    <aside class="w-30-l mt6-l">
-
-
+      <footer>
+        
 
 
-</aside>
+        
+        
+        
+      </footer>
+    </article>
 
-  </article>
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>Jump and grow wings on the way down</p>
+    
+    
+    
+    
+  </section>
+</footer>
 
     </main>
-    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
-  <div class="flex justify-between">
-  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://adamhutson.com/" >
-    &copy; 2019 Adam Hutson
-  </a>
-    <div>
-
-
-
-
-
-
-
-
-
-
-</div>
-  </div>
-</footer>
 
     
 
-  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
-
-
   </body>
+
 </html>

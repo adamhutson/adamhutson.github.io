@@ -144,5 +144,45 @@
  *4,000% increase in attendance*   This past week was the 2015 Cassandra Summit, held in Santa Clara, was the largest NoSQL conference in the world. Prior to the start, there were over 6,100 registrations onsite.</description>
     </item>
     
+    <item>
+      <title>About</title>
+      <link>http://adamhutson.com/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://adamhutson.com/about/</guid>
+      <description>all about moi
+ </description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>http://adamhutson.com/contact/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://adamhutson.com/contact/</guid>
+      <description>how to get ahold of me
+ </description>
+    </item>
+    
+    <item>
+      <title>Resume</title>
+      <link>http://adamhutson.com/resume/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://adamhutson.com/resume/</guid>
+      <description>places I&amp;#8217;ve worked and school I attended
+ </description>
+    </item>
+    
+    <item>
+      <title>Talks</title>
+      <link>http://adamhutson.com/talks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://adamhutson.com/talks/</guid>
+      <description>all of the talks I&amp;#8217;ve given
+ </description>
+    </item>
+    
   </channel>
 </rss>
