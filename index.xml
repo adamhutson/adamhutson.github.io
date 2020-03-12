@@ -1,0 +1,171 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Adam Hutson | Adam Hutson</title>
+        <link>http://adamhutson.com/</link>
+        <description>Adam Hutson | Adam Hutson</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 05 Aug 2016 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://adamhutson.com/" rel="self" type="application/rss+xml" /><item>
+                <title>Posts</title>
+                <link>http://adamhutson.com/posts/</link>
+                <pubDate>Fri, 05 Aug 2016 00:00:00 &#43;0000</pubDate><guid>http://adamhutson.com/posts/</guid>
+                <description></description>
+            </item><item>
+                <title></title>
+                <link>http://adamhutson.com/resume/</link>
+                <pubDate>Mon, 01 Jan 0001 00:00:00 &#43;0000</pubDate><guid>http://adamhutson.com/resume/</guid>
+                <description>&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_resume&#34;&gt;Resume&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Downloadable file:
+
+    &lt;a href=&#34;http://adamhutson.com/downloads/AdamHutsonResume.pdf&#34;
+       download = &#34;AdamHutsonResume.pdf&#34;
+    &gt;AdamHutsonResume.pdf
+    &lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+            </item><item>
+                <title></title>
+                <link>http://adamhutson.com/talks/</link>
+                <pubDate>Mon, 01 Jan 0001 00:00:00 &#43;0000</pubDate><guid>http://adamhutson.com/talks/</guid>
+                <description>&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_talks&#34;&gt;Talks&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;sect2&#34;&gt;
+&lt;h3 id=&#34;_cassandra_summit_2016&#34;&gt;Cassandra Summit 2016&lt;/h3&gt;
+&lt;div class=&#34;sect3&#34;&gt;
+&lt;h4 id=&#34;_c_keys_partitioning_clustering_crossfit&#34;&gt;C* Keys: Partitioning, Clustering, &amp;amp; Crossfit&lt;/h4&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Recording:
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/L0XqRF8C6D0&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+SlideShare:
+
+    &lt;iframe
+        src=&#34;//www.slideshare.net/slideshow/embed_code/key/2iF5V4LW1coMK1&#34;
+        title=&#34;SlideShare Presentation&#34;
+        height=&#34;400&#34;
+        frameborder=&#34;0&#34;
+        marginwidth=&#34;0&#34;
+        marginheight=&#34;0&#34;
+        scrolling=&#34;no&#34;
+        style=&#34;border: 1px solid #CCC; border-width: 1px; margin-bottom: 20px; width: 100%;&#34;
+        allowfullscreen=&#34;true&#34;&gt;
+    &lt;/iframe&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect3&#34;&gt;
+&lt;h4 id=&#34;_data_modeling_a_scheduling_application&#34;&gt;Data Modeling A Scheduling Application&lt;/h4&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Recording:
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/xuo3TSTDVC8&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+SlideShare:
+
+    &lt;iframe
+        src=&#34;//www.slideshare.net/slideshow/embed_code/key/C8bTehXp4XnLIr&#34;
+        title=&#34;SlideShare Presentation&#34;
+        height=&#34;400&#34;
+        frameborder=&#34;0&#34;
+        marginwidth=&#34;0&#34;
+        marginheight=&#34;0&#34;
+        scrolling=&#34;no&#34;
+        style=&#34;border: 1px solid #CCC; border-width: 1px; margin-bottom: 20px; width: 100%;&#34;
+        allowfullscreen=&#34;true&#34;&gt;
+    &lt;/iframe&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect2&#34;&gt;
+&lt;h3 id=&#34;_this_week_in_cassandra&#34;&gt;This Week in Cassandra&lt;/h3&gt;
+&lt;div class=&#34;sect3&#34;&gt;
+&lt;h4 id=&#34;_data_modeling_in_the_real_world&#34;&gt;Data Modeling in the Real World&lt;/h4&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Recording:
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/GLHh7TNogYo&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect2&#34;&gt;
+&lt;h3 id=&#34;_meetups&#34;&gt;Meetups&lt;/h3&gt;
+&lt;div class=&#34;sect3&#34;&gt;
+&lt;h4 id=&#34;_montreal_canada_cassandra_user_group&#34;&gt;Montreal Canada Cassandra User Group&lt;/h4&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Cloning Cassandra
+SlideShare:
+
+    &lt;iframe
+        src=&#34;//www.slideshare.net/slideshow/embed_code/key/IBXoe8h6eAyFiN&#34;
+        title=&#34;SlideShare Presentation&#34;
+        height=&#34;400&#34;
+        frameborder=&#34;0&#34;
+        marginwidth=&#34;0&#34;
+        marginheight=&#34;0&#34;
+        scrolling=&#34;no&#34;
+        style=&#34;border: 1px solid #CCC; border-width: 1px; margin-bottom: 20px; width: 100%;&#34;
+        allowfullscreen=&#34;true&#34;&gt;
+    &lt;/iframe&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect3&#34;&gt;
+&lt;h4 id=&#34;_springfield_missouri_python_user_group&#34;&gt;Springfield Missouri Python User Group&lt;/h4&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Cassandra &amp;amp; Python
+SlideShare:
+
+    &lt;iframe
+        src=&#34;//www.slideshare.net/slideshow/embed_code/key/1tLdrAoVEg2nuT&#34;
+        title=&#34;SlideShare Presentation&#34;
+        height=&#34;400&#34;
+        frameborder=&#34;0&#34;
+        marginwidth=&#34;0&#34;
+        marginheight=&#34;0&#34;
+        scrolling=&#34;no&#34;
+        style=&#34;border: 1px solid #CCC; border-width: 1px; margin-bottom: 20px; width: 100%;&#34;
+        allowfullscreen=&#34;true&#34;&gt;
+    &lt;/iframe&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect3&#34;&gt;
+&lt;h4 id=&#34;_san_francisco_cassandra_user_group&#34;&gt;San Francisco Cassandra User Group&lt;/h4&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Cloning Cassandra
+SlideShare:
+
+    &lt;iframe
+        src=&#34;//www.slideshare.net/slideshow/embed_code/key/dOxtJlpJXsyx0D&#34;
+        title=&#34;SlideShare Presentation&#34;
+        height=&#34;400&#34;
+        frameborder=&#34;0&#34;
+        marginwidth=&#34;0&#34;
+        marginheight=&#34;0&#34;
+        scrolling=&#34;no&#34;
+        style=&#34;border: 1px solid #CCC; border-width: 1px; margin-bottom: 20px; width: 100%;&#34;
+        allowfullscreen=&#34;true&#34;&gt;
+    &lt;/iframe&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+            </item></channel>
+</rss>

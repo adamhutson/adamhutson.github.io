@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Benefits of choosing Cassandra for your data | Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="Benefits of choosing Cassandra for your data" />
+<meta property="og:description" content="Choosing the right tool for a project can sometimes be easy. For example, to drive a nail, the obvious choice would be a hammer. Other times, the choice is not as easy or obvious. A data engineer, like a good carpenter, needs to know that different tasks require different tools. Selecting which database will hold your data has many factors to consider before a decision is made.
+ Apache Cassandra is one of the many tools that a data engineer should know how and when to use." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/benefits-of-choosing-cassandra-for-your-data/" />
+<meta property="article:published_time" content="2016-05-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2016-05-17T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Benefits of choosing Cassandra for your data"/>
+<meta name="twitter:description" content="Choosing the right tool for a project can sometimes be easy. For example, to drive a nail, the obvious choice would be a hammer. Other times, the choice is not as easy or obvious. A data engineer, like a good carpenter, needs to know that different tasks require different tools. Selecting which database will hold your data has many factors to consider before a decision is made.
+ Apache Cassandra is one of the many tools that a data engineer should know how and when to use."/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/benefits-of-choosing-cassandra-for-your-data/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="prev" href="http://adamhutson.com/cassandra-conceptual-data-modeling/" /><link rel="next" href="http://adamhutson.com/cassandra-logical-data-modeling/" /><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Benefits of choosing Cassandra for your data",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/adamhutson.com\/benefits-of-choosing-cassandra-for-your-data\/"
+        },"genre": "posts","wordcount":  1011 ,
+        "url": "http:\/\/adamhutson.com\/benefits-of-choosing-cassandra-for-your-data\/","datePublished": "2016-05-17T00:00:00\x2b00:00","dateModified": "2016-05-17T00:00:00\x2b00:00","description": ""
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Benefits of choosing Cassandra for your data</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2016-05-17>2016-05-17</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 1011 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>5 min&nbsp;</div>
+        </div><div class="content" id="content"><div id="preamble">
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="/images/cassandra-data-store.png" alt="cassandra data store">
+</div>
+</div>
+<div class="paragraph">
+<p>Choosing the right tool for a project can sometimes be easy.
+For example, to drive a nail, the obvious choice would be a hammer.
+Other times, the choice is not as easy or obvious.
+A data engineer, like a good carpenter, needs to know that different tasks require different tools.
+Selecting which database will hold your data has many factors to consider before a decision is made.</p>
+</div>
+<div class="paragraph">
+<p>Apache Cassandra is one of the many tools that a data engineer should know how and when to use.
+By the end of this post, you should know the benefits that Cassandra offers.
+Hopefully, this will help your decision of choosing a database for your data.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_is_apache_cassandra">What is Apache Cassandra?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Apache Cassandra is a fully distributed, column-oriented, peer-to-peer database that offers linear scalability and high availability.
+It was born at Facebook from a need for a database to power their Inbox Search.
+At the time, papers on Amazon’s Dynamo and Google’s BigTable had been recently published.
+Cassandra borrowed ideas from each by bringing together Dynamo’s fully distributed design and BigTable’s data model.
+The result was a globally available and eventually consistent database.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_are_cassandras_benefits">What are Cassandra’s benefits?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Cassandra offers advantages that relational and other NoSQL databases cannot match.
+Being continuously available with linear performance scalability and tunable consistency are just a few of the benefits that come to mind.</p>
+</div>
+<div class="paragraph">
+<p><strong>Continuously Available</strong></p>
+</div>
+<div class="paragraph">
+<p>Cassandra’s peer-to-peer design allows no single point of failure.
+That’s worth repeating; no single point of failure.
+This may be one of the single most important features of Cassandra.
+Cassandra is designed to stay up and running during failures.
+That means the system will always be available, even when you lose machines in the cluster.
+This continuous availability even works across multiple data centers.</p>
+</div>
+<div class="paragraph">
+<p><strong>Linear Performance</strong></p>
+</div>
+<div class="paragraph">
+<p>Due to it’s architecture, Cassandra performs reads and writes very well.
+It’s write path for data is faster than most all other databases on the market.
+The beauty of Cassandra shines when scaling the cluster, though.
+It has the unique benefit of growing performance linearly.
+If you are getting 10,000 writes per second with 10 nodes, then you’ll see 20,000 writes per second when you scale to 20 nodes.
+The same is true for reads.
+This makes capacity planning so much easier, because it’s that simple to predict.
+Add twice the nodes, you’ll get precisely twice the performance.</p>
+</div>
+<div class="paragraph">
+<p><strong>Tunable Consistency</strong></p>
+</div>
+<div class="paragraph">
+<p>Cassandra works off of the idea that data is stored on multiple nodes.
+That idea is called it’s replication factor.
+To store the same piece of data on 3 of the nodes in your cluster, you would set up a replication factor of 3.
+This means that every single write you send to Cassandra will be replicated to 3 nodes.
+However, getting that piece of data to all the necessary nodes can take a small amount of time.
+What if I want it to go faster?
+Maybe I don’t necessarily need to wait for all the replicas to have the data.
+The answer is to let the client determine how many nodes need to have acknowledged the data before the client can move on with the next task.
+If the data needs to have a fast ACK response, then the client can set the consistency to a lesser level.
+This is called being eventually consistent.
+The data will still end up being replicated to the appropriate number of nodes, but the write isn’t held up for the replication to occur.</p>
+</div>
+<div class="paragraph">
+<p><strong>Flexible Data Model</strong></p>
+</div>
+<div class="paragraph">
+<p>Cassandra’s data model is a blend of key-value and column-oriented database storage principles.
+It allows developers to think of the data in familiar table structure.
+Every column consists of 3 parts, the column name, the column value, and a timestamp.
+This is also referred to as a tuple.
+The beauty in this design is that if there is ever a collision, then the column with the latest timestamp wins.
+Columns can be normal stuff like text/numeric, or more advanced like maps/sets, or even more complex like JSON.
+It’s all valid.
+Every table’s row has some column(s) that is/are specified as it’s primary key(s).
+The value of these key column(s) are hashed together into a single value.
+That value is used for placement in the cluster ring.
+Unlike traditional databases, every row can have a different number of columns up to 2 billion columns worth.
+It’s all very flexible.
+When designing tables, it’s important to remember two things.
+First, a single table is meant to serve a single query and, second, data duplication is encouraged.</p>
+</div>
+<div class="paragraph">
+<p><strong>Strong Community Involvement</strong></p>
+</div>
+<div class="paragraph">
+<p>Since Cassandra is open-sourced through the Apache Foundation, there is a very strong community presence.
+From getting questions answered on <a href="http://stackoverflow.com/questions/tagged/cassandra">StackOverflow</a> or <a href="irc://freenode.net/#cassandra">IRC</a> channels to filling bugs/improvements in <a href="https://issues.apache.org/jira/browse/cassandra">JIRA</a>, there is always someone willing to help out.
+Not to mention that DataStax offers a slew of tutorials on the proper usage for maximizing your Cassandra deployment.
+In my opinion, the community is Cassandra’s biggest strength.</p>
+</div>
+<div class="paragraph">
+<p><strong>Standard Monitoring</strong></p>
+</div>
+<div class="paragraph">
+<p>Cassandra is written with Java’s Managed Beans to expose Java Monitoring Extensions (JMX).
+This is the way that metrics about performance, latencies, system usage, etc are streamed to other applications.
+There are many software tools that are in the market of consuming Cassandra specific JMX metrics.
+Some of them are DataStax’s <a href="http://docs.datastax.com/en/latest-opsc">OpsCenter</a>, <a href="https://www.datadoghq.com/">DataDog</a>, and <a href="http://grafana.org/">Grafana</a>.
+Consuming the metrics is only the first part, though.
+Graphing and understanding those metrics are essential to running a healthy Cassandra deployment.</p>
+</div>
+<div class="paragraph">
+<p><strong>Familiar Query Language</strong></p>
+</div>
+<div class="paragraph">
+<p>Cassandra Query Language (CQL) is a SQL-like syntax for interacting with Cassandra’s data.
+If you have a background in relational databases, then you’ll immediately recognize the SELECT, INSERT, UPDATE, DELETE syntax of CQL.
+The ideas transfer from other technologies to Cassandra.
+The two main differences is that table joins are not allowed and filtering must be done via the primary/clustering keys.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary">Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I hope this helps you when you need to decide to use Cassandra for your data.
+All of the benefits described above should give you an idea of what to expect when working with this fantastic technology.
+Please check out my many other posts on Cassandra to learn more.</p>
+</div>
+</div>
+</div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2016-05-17</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://adamhutson.com/benefits-of-choosing-cassandra-for-your-data/" data-title="Benefits of choosing Cassandra for your data" data-via="adamhutson"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://adamhutson.com/benefits-of-choosing-cassandra-for-your-data/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://adamhutson.com/benefits-of-choosing-cassandra-for-your-data/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/cassandra-conceptual-data-modeling/" class="prev" rel="prev" title="Cassandra Conceptual Data Modeling"><i class="fas fa-angle-left fa-fw"></i>Cassandra Conceptual Data Modeling</a>
+            <a href="/cassandra-logical-data-modeling/" class="next" rel="next" title="Cassandra Logical Data Modeling">Cassandra Logical Data Modeling<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div class="comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>

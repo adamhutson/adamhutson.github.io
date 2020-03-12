@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>How To Create a Cassandra Cluster in AWS Part 1 | Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="How To Create a Cassandra Cluster in AWS Part 1" />
+<meta property="og:description" content="In this post, I’ll walk you through creating a Cassandra cluster in Amazon’s Web Services. The first thing you’ll need to do is sign in to your Amazon Console. If you don’t have one, create an account. Once you’re logged in, from the dashboard, click on the EC2 logo, under the Compute section.
+   This is Amazon’s Elastic Compute Cloud where you can launch virtual servers, known as an Amazon EC2 instance." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/how-to-create-a-cassandra-cluster-in-aws-part-1/" />
+<meta property="article:published_time" content="2015-12-23T00:00:00+00:00" />
+<meta property="article:modified_time" content="2015-12-23T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How To Create a Cassandra Cluster in AWS Part 1"/>
+<meta name="twitter:description" content="In this post, I’ll walk you through creating a Cassandra cluster in Amazon’s Web Services. The first thing you’ll need to do is sign in to your Amazon Console. If you don’t have one, create an account. Once you’re logged in, from the dashboard, click on the EC2 logo, under the Compute section.
+   This is Amazon’s Elastic Compute Cloud where you can launch virtual servers, known as an Amazon EC2 instance."/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/how-to-create-a-cassandra-cluster-in-aws-part-1/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="prev" href="http://adamhutson.com/cassandra-summit-2015/" /><link rel="next" href="http://adamhutson.com/how-to-create-a-cassandra-cluster-in-aws-part-2/" /><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "How To Create a Cassandra Cluster in AWS Part 1",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/adamhutson.com\/how-to-create-a-cassandra-cluster-in-aws-part-1\/"
+        },"genre": "posts","wordcount":  616 ,
+        "url": "http:\/\/adamhutson.com\/how-to-create-a-cassandra-cluster-in-aws-part-1\/","datePublished": "2015-12-23T00:00:00\x2b00:00","dateModified": "2015-12-23T00:00:00\x2b00:00","description": ""
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">How To Create a Cassandra Cluster in AWS Part 1</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2015-12-23>2015-12-23</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 616 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>3 min&nbsp;</div>
+        </div><div class="content" id="content"><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this post, I’ll walk you through creating a Cassandra cluster in Amazon’s Web Services.
+The first thing you’ll need to do is sign in to your Amazon Console.
+If you don’t have one, create an account.
+Once you’re logged in, from the dashboard, click on the EC2 logo, under the Compute section.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ec2.jpg" alt="ec2">
+</div>
+</div>
+<div class="paragraph">
+<p>This is Amazon’s Elastic Compute Cloud where you can launch virtual servers, known as an Amazon EC2 instance.
+From the EC2 Dashboard, you will notice that you have multiple regions to choose from in the upper right corner of the dashboard.
+Since I’m U.S. based, I’ve selected the N. Virginia based data center.
+Now we’re going to start the Launch Instance wizard.
+Right in the middle of the screen, you should see a large “Launch Instance” button under the Create Instance section.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_the_virtual_machines">Create the Virtual Machines</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are many ways to select an Operating System for your virtual server.
+Some are provided via an Amazon Machine Image (AMI), others are provided from the Community, or you can even provide your own Image.
+For this tutorial, I’m looking to run Ubuntu on an instance with a small local SSD.</p>
+</div>
+<div class="paragraph">
+<p>For that I’ll select the Quick Start menu,</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/create-a-virtual-machine.jpg" alt="create a virtual machine">
+</div>
+</div>
+<div class="paragraph">
+<p>and chose the Ubuntu Server option.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/select-ubuntu.jpg" alt="select ubuntu">
+</div>
+</div>
+<div class="paragraph">
+<p>The next step is to select an instance size.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/choose-an-instance-type.jpg" alt="choose an instance type">
+</div>
+</div>
+<div class="paragraph">
+<p>I’m wanting something that uses local SSDs and not EBS.
+I could try to use the free tier and get a super tiny instance, but it doesn’t really demonstrate anything that you’d actually do in the real world.
+From the available instance sizes, I’m looking for something not too expensive or beefy, since this is just a tutorial.
+I’ve decided that an m3.large is small enough to demonstrate what I need and still big enough to run without any issues.</p>
+</div>
+<div class="paragraph">
+<p>Choose the m3.large instance type.  This virtual server has 2 cores, 7.5G RAM &amp; a 32G SSD with moderate network performance.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/m3-large.png" alt="m3 large">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 3</strong> is where you can decide how many of this these instances you wish to create and which availability zone, if you want a VPC, etc.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/configure-instance-details.jpg" alt="configure instance details">
+</div>
+</div>
+<div class="paragraph">
+<p>For this tutorial, I think a three node cluster will suffice.
+I’ve changed the Number of Instances input from 1 to 3 and left the rest as the defaults.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/3-node-cluster.jpg" alt="3 node cluster">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 4</strong> is for adding any additional storage.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/add-storage.jpg" alt="add storage">
+</div>
+</div>
+<div class="paragraph">
+<p>This tutorial doesn’t really have any need for additional storage, so I’m going to pass over this selection, leaving it all as the defaults.</p>
+</div>
+<div class="paragraph">
+<p><strong>Step 5</strong> is for adding tags to your instance.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/tag-instances.jpg" alt="tag instances"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Step 6</strong> is for adding a Security Group around your instances.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/configure-security-groups.jpg" alt="configure security groups">
+</div>
+</div>
+<div class="paragraph">
+<p>I’ve updated the Security Group name &amp; description to reflect what I’m doing.
+I also added four inbound rules for the ports that Cassandra requires.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/inbound-rules.jpg" alt="inbound rules">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 7</strong> allows you to review all the choices you’ve made and make any changes.
+If you’re satisfied with what you’ve selected, then you can press the Launch button and watch your virtual servers get created.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/review-instance-launch.jpg" alt="review instance launch">
+</div>
+</div>
+<div class="paragraph">
+<p>After you press the Launch button, AWS will prompt you to add a key pair to be used when you want to log into your new instances.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/select-key-pair-1.jpg" alt="select key pair 1">
+</div>
+</div>
+<div class="paragraph">
+<p>For the sake of the tutorial, I’ll create a new key pair and download the private key file.
+If you lose this private key, you’ll never be able to access these instances and will need to terminate them and start over.
+So don’t forget to click the Download Key Pair button and keep that .pem file someplace safe.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/download-key-pair.jpg" alt="download key pair">
+</div>
+</div>
+<div class="paragraph">
+<p>Now I’ve pressed the Launch Instances button and my machines are being created.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/launch-status.jpg" alt="launch status">
+</div>
+</div>
+<div class="paragraph">
+<p>So now I’m on the clock and being charged by Amazon for my use of these 3 machines.</p>
+</div>
+<div class="paragraph">
+<p>In part 2 of this two-part tutorial, We will install &amp; configure Cassandra on our cluster.</p>
+</div>
+</div>
+</div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2015-12-23</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://adamhutson.com/how-to-create-a-cassandra-cluster-in-aws-part-1/" data-title="How To Create a Cassandra Cluster in AWS Part 1" data-via="adamhutson"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://adamhutson.com/how-to-create-a-cassandra-cluster-in-aws-part-1/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://adamhutson.com/how-to-create-a-cassandra-cluster-in-aws-part-1/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/cassandra-summit-2015/" class="prev" rel="prev" title="Cassandra Summit 2015"><i class="fas fa-angle-left fa-fw"></i>Cassandra Summit 2015</a>
+            <a href="/how-to-create-a-cassandra-cluster-in-aws-part-2/" class="next" rel="next" title="How To Create a Cassandra Cluster in AWS Part 2">How To Create a Cassandra Cluster in AWS Part 2<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div class="comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Money Vs Decimal Data Types In Sql Server | Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="Money Vs Decimal Data Types In Sql Server" />
+<meta property="og:description" content="Last week, one of our developers asked us in the DBA group what our standard was for currency columns. My first thought was DECIMAL(19,4), but I couldn’t give a reason why it was standard. I knew MONEY was essentially the same definition, but had heard that it was dangerous to use. Suspecting a rounding issue, I began with a simple test.
+ DECLARE @dOne DECIMAL(19,4), @dThree DECIMAL(19,4), @mOne MONEY, @mThree MONEY SELECT @dOne = 1, @dThree = 3, @mOne = 1, @mThree = 3 SELECT @dOne / @dThree * @dThree AS DecimalResult, @mOne / @mThree * @mThree AS MoneyResult   DecimalResult MoneyResult 1." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/money-vs-decimal-data-types-in-sql-server/" />
+<meta property="article:published_time" content="2009-11-20T00:00:00+00:00" />
+<meta property="article:modified_time" content="2009-11-20T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Money Vs Decimal Data Types In Sql Server"/>
+<meta name="twitter:description" content="Last week, one of our developers asked us in the DBA group what our standard was for currency columns. My first thought was DECIMAL(19,4), but I couldn’t give a reason why it was standard. I knew MONEY was essentially the same definition, but had heard that it was dangerous to use. Suspecting a rounding issue, I began with a simple test.
+ DECLARE @dOne DECIMAL(19,4), @dThree DECIMAL(19,4), @mOne MONEY, @mThree MONEY SELECT @dOne = 1, @dThree = 3, @mOne = 1, @mThree = 3 SELECT @dOne / @dThree * @dThree AS DecimalResult, @mOne / @mThree * @mThree AS MoneyResult   DecimalResult MoneyResult 1."/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/money-vs-decimal-data-types-in-sql-server/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="prev" href="http://adamhutson.com/puzzle-solved/" /><link rel="next" href="http://adamhutson.com/free-ebook-getting-real/" /><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Money Vs Decimal Data Types In Sql Server",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/adamhutson.com\/money-vs-decimal-data-types-in-sql-server\/"
+        },"genre": "posts","wordcount":  627 ,
+        "url": "http:\/\/adamhutson.com\/money-vs-decimal-data-types-in-sql-server\/","datePublished": "2009-11-20T00:00:00\x2b00:00","dateModified": "2009-11-20T00:00:00\x2b00:00","description": ""
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Money Vs Decimal Data Types In Sql Server</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2009-11-20>2009-11-20</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 627 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>3 min&nbsp;</div>
+        </div><div class="content" id="content"><div class="paragraph">
+<p>Last week, one of our developers asked us in the DBA group what our standard was for currency columns.
+My first thought was DECIMAL(19,4), but I couldn’t give a reason why it was standard.
+I knew MONEY was essentially the same definition, but had heard that it was dangerous to use.
+Suspecting a rounding issue, I began with a simple test.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">DECLARE
+    @dOne DECIMAL(19,4),
+    @dThree DECIMAL(19,4),
+    @mOne MONEY,
+    @mThree MONEY
+SELECT
+    @dOne = 1,
+    @dThree = 3,
+    @mOne = 1,
+    @mThree = 3
+SELECT
+    @dOne / @dThree * @dThree AS DecimalResult,
+    @mOne / @mThree * @mThree AS MoneyResult</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">DecimalResult  MoneyResult
+1.000000       0.9999</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Interesting!
+Why did the MONEY type get truncated?
+So another quick query gave me the output precision and scale.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">SELECT
+    SQL_VARIANT_PROPERTY(@dOne / @dThree * @dThree, 'basetype') AS DecimalBasetype,
+    SQL_VARIANT_PROPERTY(@dOne / @dThree * @dThree, 'precision') AS DecimalPrecision,
+    SQL_VARIANT_PROPERTY(@dOne / @dThree * @dThree, 'scale') AS DecimalScale,
+    SQL_VARIANT_PROPERTY(@mOne / @mThree * @mThree, 'basetype') AS MoneyBasetype,
+    SQL_VARIANT_PROPERTY(@mOne / @mThree * @mThree, 'precision') AS MoneyPrecision,
+    SQL_VARIANT_PROPERTY(@mOne / @mThree * @mThree, 'scale') AS MoneyScale</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">DecimalBasetype  DecimalPrecision  DecimalScale  MoneyBasetype  MoneyPrecision  MoneyScale
+Decimal          38                6             money          19              4</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The decimal is now a DECIMAL(38,6) and the MONEY is still a DECIMAL(19,4).
+Hmmm.
+Why did one change and the other didn’t change.</p>
+</div>
+<div class="paragraph">
+<p>For an answer, I started digging into MSDN for precision &amp; scale of data types.
+I came across this article.
+It had a fantastic table that described it.</p>
+</div>
+<div class="paragraph">
+<p>Operation</p>
+</div>
+<div class="paragraph">
+<p>Result precision</p>
+</div>
+<div class="paragraph">
+<p>Result scale *</p>
+</div>
+<div class="paragraph">
+<p>e1 + e2</p>
+</div>
+<div class="paragraph">
+<p>max(s1, s2) + max(p1-s1, p2-s2) + 1</p>
+</div>
+<div class="paragraph">
+<p>max(s1, s2)</p>
+</div>
+<div class="paragraph">
+<p>e1 - e2</p>
+</div>
+<div class="paragraph">
+<p>max(s1, s2) + max(p1-s1, p2-s2) + 1</p>
+</div>
+<div class="paragraph">
+<p>max(s1, s2)</p>
+</div>
+<div class="paragraph">
+<p>e1 * e2</p>
+</div>
+<div class="paragraph">
+<p>p1 + p2 + 1</p>
+</div>
+<div class="paragraph">
+<p>s1 + s2</p>
+</div>
+<div class="paragraph">
+<p>e1 / e2</p>
+</div>
+<div class="paragraph">
+<p>p1 - s1 + s2 + max(6, s1 + p2 + 1)</p>
+</div>
+<div class="paragraph">
+<p>max(6, s1 + p2 + 1)</p>
+</div>
+<div class="paragraph">
+<p>e1 { UNION | EXCEPT | INTERSECT } e2</p>
+</div>
+<div class="paragraph">
+<p>max(s1, s2) + max(p1-s1, p2-s2)</p>
+</div>
+<div class="paragraph">
+<p>max(s1, s2)</p>
+</div>
+<div class="paragraph">
+<p>e1 % e2</p>
+</div>
+<div class="paragraph">
+<p>min(p1-s1, p2 -s2) + max( s1,s2 )</p>
+</div>
+<div class="paragraph">
+<p>max(s1, s2)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The result precision and scale have an absolute maximum of 38.
+When a result precision is greater than 38, the corresponding scale is reduced to prevent the integral part of a result from being truncated.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>So let’s expand on the first calculation, @dOne / @dThree * @dThree, which is actually two calculations, division and then multiplication.</p>
+</div>
+<div class="paragraph">
+<p>e1 / e2 = DECIMAL(19,4) / DECIMAL(19,4)</p>
+</div>
+<div class="paragraph">
+<p>precision = p1 – s1 + s2 + max(6, s1 + p2 + 1) = 19 – 4 + 4 + max(6, 4 + 19+ 1) = 43</p>
+</div>
+<div class="paragraph">
+<p>scale = max(6, s1 + p2 + 1) = max(6, 4+19+1) = 24</p>
+</div>
+<div class="paragraph">
+<p>So that leaves us with a DECIMAL (43,24) for the division portion, which is not a legal data type.
+So SQL subtracts 5 from the precision to get the 43 down to a 38, and a matching 5 from the scale, which leaves us with a DECIMAL(38,19).</p>
+</div>
+<div class="paragraph">
+<p>e1 * e2 = DECIMAL(38,19) * DECIMAL(19,4)</p>
+</div>
+<div class="paragraph">
+<p>precision = p1 + p2 + 1 = 38 + 19 + 1 = 58</p>
+</div>
+<div class="paragraph">
+<p>scale = s1 + s2 = 19 + 4 = 23</p>
+</div>
+<div class="paragraph">
+<p>This leaves us with a DECIMAL(58,23) which is also an illegal data type.
+So, again, SQL subtracts 20 from the precision to get the 58 down to a 38, and a matching 20 from the scale, which leaves us with a DECIMAL(38,3).
+But wait, there is an undocumented rule that if the scale is being lowered by this process, it is never lowered below 6.
+So we actually end up with a DECIMAL(38,6).</p>
+</div>
+<div class="paragraph">
+<p>With the second calculation, @mOne / @mThree * @mThree, all of the results are cast back to a MONEY or DECIMAL(19,4) which truncates data and is why we lose the accuracy of our scale.</p>
+</div>
+<div class="paragraph">
+<p>What did we learn, … Don’t use the MONEY datatype in SQL Server.</p>
+</div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2009-11-20</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://adamhutson.com/money-vs-decimal-data-types-in-sql-server/" data-title="Money Vs Decimal Data Types In Sql Server" data-via="adamhutson"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://adamhutson.com/money-vs-decimal-data-types-in-sql-server/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://adamhutson.com/money-vs-decimal-data-types-in-sql-server/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/puzzle-solved/" class="prev" rel="prev" title="Puzzle Solved"><i class="fas fa-angle-left fa-fw"></i>Puzzle Solved</a>
+            <a href="/free-ebook-getting-real/" class="next" rel="next" title="Free Ebook: Getting Real">Free Ebook: Getting Real<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div class="comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>

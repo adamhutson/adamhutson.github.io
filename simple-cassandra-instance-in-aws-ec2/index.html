@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Simple Cassandra Instance In AWS EC2 | Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="Simple Cassandra Instance In AWS EC2" />
+<meta property="og:description" content="I’ve been doing Cassandra development in an enterprise setting for quite a while now. And being a good little development shop (Expedia), we had Chef set up to deploy stuff for us, including Cassandra installation. Chef is great at doing just that. The downside to that is that you forgot the details of how to install Cassandra manually. Here are the steps to spin up an EC2 instance and getting a single instance of Cassandra running on it." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/simple-cassandra-instance-in-aws-ec2/" />
+<meta property="article:published_time" content="2014-10-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2014-10-24T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Simple Cassandra Instance In AWS EC2"/>
+<meta name="twitter:description" content="I’ve been doing Cassandra development in an enterprise setting for quite a while now. And being a good little development shop (Expedia), we had Chef set up to deploy stuff for us, including Cassandra installation. Chef is great at doing just that. The downside to that is that you forgot the details of how to install Cassandra manually. Here are the steps to spin up an EC2 instance and getting a single instance of Cassandra running on it."/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/simple-cassandra-instance-in-aws-ec2/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="prev" href="http://adamhutson.com/house-of-the-rising-scrum/" /><link rel="next" href="http://adamhutson.com/cassandra-summit-2015/" /><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Simple Cassandra Instance In AWS EC2",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/adamhutson.com\/simple-cassandra-instance-in-aws-ec2\/"
+        },"genre": "posts","wordcount":  1018 ,
+        "url": "http:\/\/adamhutson.com\/simple-cassandra-instance-in-aws-ec2\/","datePublished": "2014-10-24T00:00:00\x2b00:00","dateModified": "2014-10-24T00:00:00\x2b00:00","description": ""
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Simple Cassandra Instance In AWS EC2</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2014-10-24>2014-10-24</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 1018 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>5 min&nbsp;</div>
+        </div><div class="content" id="content"><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>I’ve been doing Cassandra development in an enterprise setting for quite a while now.
+And being a good little development shop (Expedia), we had Chef set up to deploy stuff for us, including Cassandra installation.
+Chef is great at doing just that.
+The downside to that is that you forgot the details of how to install Cassandra manually.
+Here are the steps to spin up an EC2 instance and getting a single instance of Cassandra running on it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_aws_setup">AWS setup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>First of all, you must have an <a href="http://aws.amazon.com/">Amazon Web Services</a> (AWS) account to do this.
+Just do it, you’ll thank me once you see all the cool things you can do with it.
+Once you’re signed up, log into the AWS console and go to the EC2 dashboard.
+Click on the big “Launch Instance” button (I know, they make it easy, huh).
+My personal preference is CentOS, but you can pick whatever flavor of Unix you like.
+I typically go to the AMI Marketplace over the Community AMI area.
+I know I can trust the marketplace, whereas the other, I can’t trust to not have extra bloat pre-installed.
+From the Marketplace, I select the latest version of CentOS.
+In this case, CentOS 6.5.</p>
+</div>
+<div class="paragraph">
+<p>The next step is to select your instance size.
+This decision can affect your wallet greatly.
+AWS offers a free tier for new users to have a micro instance running non-stop for free for the first year.
+Now, since I’m way past the first year on my AWS usage, I’ll only pay a couple cents per hour for use.
+But if you’re not careful, you can rack up a pretty good sized bill.
+I went with a m1.small instance.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_connect_to_ec2">Connect to EC2</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once you have your Linux VM up and running in EC2, you’ll need to connect to it.
+If you’re on a Mac, you can simply “ssh” into it.
+If you are on a PC, then you’ll need to download a third-party tool to connect.
+I like using “cmder”, available <a href="http://bliker.github.io/cmder/">here</a>.
+It’s probably the most similar to “ssh-ing” from a Mac.
+The following is my connection.
+Note, I have a pem file that I’m passing to it.
+This is the public/private key that you can set up.
+Highly advise using this method to get in and out of EC2 instances.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">ssh -i c:\adamhutson.pem root@ec2-54-91-46-126.compute-1.amazonaws.com</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_java_setup">Java setup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>First thing, does your VM have Java 7 installed on it?
+Run the following to find out:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">java -version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If it’s not installed, as is the case with most vanilla CentOS images, you’ll receive the following response:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">-bash: java: command not found</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So we’ll need to download the JDK for Java 7 and install it.
+Run the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">cd /opt/
+curl -b oraclelicense=accept-securebackup-cookie -O -L http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jdk-7u67-linux-x64.tar.gz
+tar xzf jdk-7u67-linux-x64.tar.gz
+cd /opt/jdk1.7.0_67/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So now, we’ve downloaded and unzipped the JDK to the cd/opt/ folder, and then navigated into the new JDK folder.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">alternatives --install /usr/bin/java java /opt/jdk1.7.0_67/bin/java 2
+alternatives --config java
+alternatives --install /usr/bin/jar jar /opt/jdk1.7.0_67/bin/jar 2
+alternatives --install /usr/bin/javac javac /opt/jdk1.7.0_67/bin/javac 2
+alternatives --set jar /opt/jdk1.7.0_67/bin/jar
+alternatives --set javac /opt/jdk1.7.0_67/bin/javac</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let’s re-check the version of Java now that we have the JDK 7 installed:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">java -version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Should receive the following now:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">java version "1.7.0_67"
+Java(TM) SE Runtime Environment (build 1.7.0_67-b01)
+Java HotSpot(TM) 64-Bit Server VM (build 24.65-b04, mixed mode)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we need to set up some environment variables:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">export JAVA_HOME=/opt/jdk1.7.0_67
+export JRE_HOME=/opt/jdk1.7.0_67/jre
+export PATH=$PATH:/opt/jdk1.7.0_67/bin:/opt/jdk1.7.0_67/jre/bin</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cassandra_install">Cassandra install</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We need  a place to store our Cassandra files that we will be downloading.
+I choose to have a generic “cassandra” folder in the root.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">mkdir /cassandra
+cd /cassandra</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There are two different ways to run Cassandra.
+The first is to download the tar and run it manually.
+The other is to get an rpm and install it as a service.</p>
+</div>
+<div class="sect2">
+<h3 id="_option_1_manually">Option 1: Manually</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl -OL http://www.apache.org/dist/cassandra/2.1.0/apache-cassandra-2.1.0-bin.tar.gz
+tar xzf apache-cassandra-2.1.0-bin.tar.gz
+cd apache-cassandra-2.1.0
+bin/cassandra -f</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note the -f option that we passed the Cassandra binary.
+This tell Cassandra to run and output messages to the foreground.
+This is really nice to see what is going on.
+You can also leave that -f option off and not see any output.
+With it, you should receive a ton of output messages.
+However, it will stop outputting and the last couple lines should be like the following: (Note the last line that it is “Listening for thrift clients”)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">INFO 14:33:44 Starting listening for CQL clients on localhost/127.0.0.1:9042...
+INFO 14:33:44 Binding thrift service to localhost/127.0.0.1:9160
+INFO 14:33:44 Listening for thrift clients...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we have Cassandra running in the foreground, we’ll need to open a new tab and ssh into the box again.
+If we hadn’t used that -f, you could have reused the same ssh connection as above.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">cd /cassandra/apache-cassandra-2.1.0
+bin/cqlsh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We are now connected to that running instance of Cassandra via the cqlsh interface.
+The following is the first part of the response for the cqlsh command line.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">Connected to Test Cluster at 127.0.0.1:9042.
+[cqlsh 5.0.1 | Cassandra 2.1.0 | CQL spec 3.2.0 | Native protocol v3]
+Use HELP for help.
+cqlsh&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To stop this installation of Cassandra from running, it’s a two-step procedure.
+First we grep to get the pid that it’s running under and then kill the pid.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">ps aux | grep cassandra
+kill 1234</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_option_2_as_a_service">Option 2: As a service</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl -OL http://rpm.datastax.com/community /noarch/cassandra21-2.1.0-1.noarch.rpm
+rpm -i cassandra21-2.1.0-1.noarch.rpm</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Should receive the following, letting you know that the service has started.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">service cassandra start
+Starting Cassandra: OK</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also query the service to see if it’s running:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">service cassandra status</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Should receive the following, with a different pid, of course:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">cassandra (pid 24356) is running...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let’s connect to it to see if it responds:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">cd /usr/bin
+cqlsh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Should receive the following to know that you are now inside the cqlsh prompt interact with Cassandra data models:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">Connected to Test Cluster at 127.0.0.1:9042.
+[cqlsh 5.0.1 | Cassandra 2.1.0 | CQL spec 3.2.0 | Native protocol v3]
+Use HELP for help.
+cqlsh&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It’s a service, so the normal service command are what you will use to stop it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">service cassandra stop</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_start_using_cassandra">Start using Cassandra</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>That’s it.
+Now go on your merry way and spin up your own.</p>
+</div>
+</div>
+</div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2014-10-24</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://adamhutson.com/simple-cassandra-instance-in-aws-ec2/" data-title="Simple Cassandra Instance In AWS EC2" data-via="adamhutson"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://adamhutson.com/simple-cassandra-instance-in-aws-ec2/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://adamhutson.com/simple-cassandra-instance-in-aws-ec2/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/house-of-the-rising-scrum/" class="prev" rel="prev" title="House Of The Rising Scrum"><i class="fas fa-angle-left fa-fw"></i>House Of The Rising Scrum</a>
+            <a href="/cassandra-summit-2015/" class="next" rel="next" title="Cassandra Summit 2015">Cassandra Summit 2015<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div class="comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>

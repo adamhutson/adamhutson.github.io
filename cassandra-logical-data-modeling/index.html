@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Cassandra Logical Data Modeling | Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="Cassandra Logical Data Modeling" />
+<meta property="og:description" content="The task of a data modeler is to create order out of chaos without excessively distorting the truth. The finished product should be a data model that describes the structure, manipulation and integrity aspects of the data to be stored. To properly create a data model, the modeler will transform said chaos through three distinct stages. The first is a Conceptual Data Model, then a Logical Data Model, and lastly, a Physical Data Model." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/cassandra-logical-data-modeling/" />
+<meta property="article:published_time" content="2016-05-26T00:00:00+00:00" />
+<meta property="article:modified_time" content="2016-05-26T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cassandra Logical Data Modeling"/>
+<meta name="twitter:description" content="The task of a data modeler is to create order out of chaos without excessively distorting the truth. The finished product should be a data model that describes the structure, manipulation and integrity aspects of the data to be stored. To properly create a data model, the modeler will transform said chaos through three distinct stages. The first is a Conceptual Data Model, then a Logical Data Model, and lastly, a Physical Data Model."/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/cassandra-logical-data-modeling/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="prev" href="http://adamhutson.com/benefits-of-choosing-cassandra-for-your-data/" /><link rel="next" href="http://adamhutson.com/cassandra-partitioning-and-clustering-keys-explained/" /><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Cassandra Logical Data Modeling",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/adamhutson.com\/cassandra-logical-data-modeling\/"
+        },"genre": "posts","wordcount":  1419 ,
+        "url": "http:\/\/adamhutson.com\/cassandra-logical-data-modeling\/","datePublished": "2016-05-26T00:00:00\x2b00:00","dateModified": "2016-05-26T00:00:00\x2b00:00","description": ""
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Cassandra Logical Data Modeling</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2016-05-26>2016-05-26</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 1419 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>7 min&nbsp;</div>
+        </div><div class="content" id="content"><div id="preamble">
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingLogicalDataModel-Final.png" alt="SchedulingLogicalDataModel Final">
+</div>
+</div>
+<div class="paragraph">
+<p>The task of a data modeler is to create order out of chaos without excessively distorting the truth.
+The finished product should be a data model that describes the structure, manipulation and integrity aspects of the data to be stored.
+To properly create a data model, the modeler will transform said chaos through three distinct stages.
+The first is a Conceptual Data Model, then a Logical Data Model, and lastly, a Physical Data Model.
+The first post on the Conceptual Data Model has been published.
+This post will cover the Logical data model.
+There will be a following post on the Physical data model.
+It will also walk through the creation of a full blown logical data model for a service scheduling application to be built with a Cassandra backend.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_logical_data_model">Logical Data Model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Logical data models build upon the Conceptual data model and takes into account the application’s workflow.
+This type of model builds upon what we know about the data so far and applies it to how our application will use the data.
+The product of the Logical data model is a mapping of Entity Relationship Diagrams to desired output of queries.
+This product will take the form of entities becoming tables, attributes becoming columns/fields, and relationships becoming keys.</p>
+</div>
+<div class="paragraph">
+<p>For example, let’s expand on the first example in the previous Conceptual Data Modeling post.
+We have established that a Person is an entity class and has potential relationships, such as genealogical or marriage.
+In the Logical Data Model, we would map the Person entity to a Person table.
+The attributes of name, gender, and age become columns/fields in the Person table.
+To map relationships, we would create a key columns/fields to use as reference points between tables.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_diagramming_logical_data_models">Diagramming Logical Data Models</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The idea of Logical data modeling has been around since the mid 1970s.
+At that time, a logical model, or schema, was one of two types, hierarchical or relational.
+It was meant to be completely independent of any technology platform.
+To diagram it, you would simply start by mapping objects/attributes/relationships over to tables with columns and keys.</p>
+</div>
+<div class="paragraph">
+<p>The example above would look like the following diagram:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/LogicalDataModel-ParentChild.png" alt="LogicalDataModel ParentChild">
+</div>
+</div>
+<div class="paragraph">
+<p>Once you’ve got the object entities mapped to tables, you may want to brush up on your rules of normalization.
+William Kent’s 1982 paper does a really good job of describing the first five degrees of normalization.
+Ideally, a logical data model is normalized to fourth normal form (4NF).
+If you’ve got a RDBMS background, then this is all making sense.
+If not, normalization is the process of organizing the columns and tables to minimize redundancy.
+There are 6 degrees of normalization.
+For logical schemas, we only need to go to the fourth.
+A table is in 4NF if and only if, every one of its non-trivial multivalued dependencies is either a candidate key or a superset thereof.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_logical_data_model_for_cassandra">Logical Data Model for Cassandra</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that I’ve explained to you what all that normalization stuff is intended for, set it aside.
+Cassandra is a different creature than traditional databases.
+It has more in common with a data warehouse, than a relational database.
+Cassandra thrives in a world where writing the same piece of data to multiple tables that are arranged with slightly different keys is the goal.
+Data redundancy is the norm and normalization is the enemy.</p>
+</div>
+<div class="paragraph">
+<p>But why did we go over all that 4NF stuff?
+To be good at data modeling, you have to go through all of the steps to fully understand your data.
+Otherwise, you end up with anomalies that don’t fit and end up hurting the overall schema.
+There’s nothing worse that going to production with a design and realizing that you can’t build on it because you didn’t fully understand it’s needs in the first place.</p>
+</div>
+<div class="paragraph">
+<p>Let’s see what a logical data model would look like for our Scheduling application that we first described in our earlier Conceptual data modeling post.</p>
+</div>
+<div class="sect2">
+<h3 id="_client">Client</h3>
+<div class="paragraph">
+<p>The Client entity has a 1:N (aka, one-to-many) relationship to the Service Appointment entity.
+This means that the Service Appointment entity will have a Client key to column (client_id).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingLogicalDataModel-Client.png" alt="SchedulingLogicalDataModel Client">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_service_appointment">Service Appointment</h3>
+<div class="paragraph">
+<p>The Service Appointment entity has a N:1 (aka, many-to-one) relationship to Client, Service Provider, Service, and Service Provider Employee.
+This means that the Service Appointment table will have key columns to those four entities (client_id, service_provider_id, service_id, service_provider_employee_id).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingLogicalDataModel-ServiceAppointment.png" alt="SchedulingLogicalDataModel ServiceAppointment">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_service_provider">Service Provider</h3>
+<div class="paragraph">
+<p>The Service Provider entity has a 1:N relationship to the Service Appointment, Service, and Service Provider Employee entities.
+This means that each of those three entities will contain a key column to the Service Provider entity (service_provider_id).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingLogicalDataModel-ServiceProvider.png" alt="SchedulingLogicalDataModel ServiceProvider">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_services">Services</h3>
+<div class="paragraph">
+<p>The Services entity has a N:1 relationship to the Service Provider entity.
+This means that the Service entity will contain a key column to the Service Provider entity (service_provider_id).
+It also has a N:N (aka, many-to-many) relationship to the Service Provider Employee entity.
+This means that we will need a intermediate table to make this relationship possible.
+To accomplish this, we will create a new entity, Services by Service Provider Employee.
+This new entity will contain keys to both the Service and the Service Provider Employee entities (service_id and service_provider_employee_id).
+The Service entity also has a 1:N relationship to the Service Appointment entity.
+This means that the Service Appointment entity will contain a key to the Service entity (service_id).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingLogicalDataModel-Service.png" alt="SchedulingLogicalDataModel Service">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_service_provider_employees">Service Provider Employees</h3>
+<div class="paragraph">
+<p>The Service Provider Employee entity will have a 1:N relationship to Service Appointment.
+It will have a N:1 relationship to Service Provider.
+It will also have a N:N relationship to Service Provider Employee.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingLogicalDataModel-ServiceProvider-Employee.png" alt="SchedulingLogicalDataModel ServiceProvider Employee">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_final_logical_model">Final Logical Model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This combines everything we covered in the above models into a single logical model.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingLogicalDataModel-Final.png" alt="SchedulingLogicalDataModel Final">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_query_driven_logical_data_model">Query Driven Logical Data Model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Earlier, I mentioned that the product of the Logical data model is a mapping of Entity Relationship Diagrams to desired output of queries.
+Now that we know what all of our entities look like in table form, lets combine that with the queries that the application will be needing.
+This particular step is an addition to the classic data modeling approach.
+It is specific to Cassandra’s join-less nature.
+This will give us what the combined entities will look like as tables in a Cassandra environment.</p>
+</div>
+<div class="paragraph">
+<p>Ideally, a designer will have gone through all the potential use cases and specified what the application flow will be.
+From those application flows, we can create queries that will satisfy those use cases.</p>
+</div>
+<div class="paragraph">
+<p>The user/application flows below are just a small number that could be present in a full-blown application.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Search for a client by name.</p>
+</li>
+<li>
+<p>Search for a client by phone number.</p>
+</li>
+<li>
+<p>Get all scheduled service appointment by client for date range.</p>
+</li>
+<li>
+<p>Get all scheduled service appointment by employee for date range.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cassandra_queries">Cassandra Queries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Early on in my Cassandra career, I was told that the best way to model your Cassandra data is to map a single query to a table.
+So for every data results piece of the application, it is only asking a single Cassandra table to retrieve the needed data.
+With this in mine, we need to start by defining the filter criteria for each query.
+The next four sections will illustrate the above use cases and how you can create Cassandra tables that show very similar data but are searched differently.</p>
+</div>
+<div class="sect2">
+<h3 id="_client_by_name">Client by Name</h3>
+<div class="paragraph">
+<p>This result set of data will return all of the clients that have a given name.
+We will want the name to be the primary key and then list all clients by the next most identifying piece of data, phone number.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingLogicalDataModel-ClientByName.png" alt="SchedulingLogicalDataModel ClientByName">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_client_by_phone_number">Client by Phone Number</h3>
+<div class="paragraph">
+<p>This result set of data will return all of the clients that have a given phone number.
+We will want the phone number to be the primary key and then list all the clients’ names.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingLogicalDataModel-ClientByPhoneNumber.png" alt="SchedulingLogicalDataModel ClientByPhoneNumber">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_service_appointment_by_client">Service Appointment by Client</h3>
+<div class="paragraph">
+<p>This query will return all of the service appointments that a given client has scheduled.
+We will want to search by client_id and then list all of the appointments in chronological order.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingLogicalDataModel-ServiceAppointmentByClient.png" alt="SchedulingLogicalDataModel ServiceAppointmentByClient">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_service_appointment_by_employee">Service Appointment by Employee</h3>
+<div class="paragraph">
+<p>This query will return all of the service appointments that a given employee has scheduled.
+We will want to search by employee_id and then list all of the appointments in chronological order.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingLogicalDataModel-ServiceAppointmentByEmployee.png" alt="SchedulingLogicalDataModel ServiceAppointmentByEmployee">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary">Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>At this point in this data modeling series, you should have a good understanding of what Conceptual &amp; Logical Data Models are.
+So far, I’ve shown you how to describe your data as entities and to map those entities to tables and then to Cassandra queries.
+The next post will continue the series and dive into the Physical Data Model.</p>
+</div>
+</div>
+</div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2016-05-26</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://adamhutson.com/cassandra-logical-data-modeling/" data-title="Cassandra Logical Data Modeling" data-via="adamhutson"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://adamhutson.com/cassandra-logical-data-modeling/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://adamhutson.com/cassandra-logical-data-modeling/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/benefits-of-choosing-cassandra-for-your-data/" class="prev" rel="prev" title="Benefits of choosing Cassandra for your data"><i class="fas fa-angle-left fa-fw"></i>Benefits of choosing Cassandra for your data</a>
+            <a href="/cassandra-partitioning-and-clustering-keys-explained/" class="next" rel="next" title="Cassandra Partitioning &amp; Clustering Keys Explained">Cassandra Partitioning &amp; Clustering Keys Explained<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div class="comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>

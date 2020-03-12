@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Avoid Cursors, Rewrite Into While Loops | Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="Avoid Cursors, Rewrite Into While Loops" />
+<meta property="og:description" content="A few months back, we had a stored proc at work that was using CURSORs pretty heavily. It had CURSORs inside of CURSORs. This proc was one of our oldest, biggest, and most involved procs at over 2050 lines. On larger clients, it could be called thousands of times a day. All of the cursors were FAST_FORWARD types, which should have at least been somewhat performance friendly. However they were SELECTing from tables that had triggers which implicitly converted the cursor type to be STATIC." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/avoid-cursors-rewrite-into-while-loops/" />
+<meta property="article:published_time" content="2009-10-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2009-10-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Avoid Cursors, Rewrite Into While Loops"/>
+<meta name="twitter:description" content="A few months back, we had a stored proc at work that was using CURSORs pretty heavily. It had CURSORs inside of CURSORs. This proc was one of our oldest, biggest, and most involved procs at over 2050 lines. On larger clients, it could be called thousands of times a day. All of the cursors were FAST_FORWARD types, which should have at least been somewhat performance friendly. However they were SELECTing from tables that had triggers which implicitly converted the cursor type to be STATIC."/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/avoid-cursors-rewrite-into-while-loops/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="prev" href="http://adamhutson.com/goal-explore-more-solutions-than-just-winforms/" /><link rel="next" href="http://adamhutson.com/finding-the-last-reboot-time-of-a-sql-server/" /><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Avoid Cursors, Rewrite Into While Loops",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/adamhutson.com\/avoid-cursors-rewrite-into-while-loops\/"
+        },"genre": "posts","wordcount":  392 ,
+        "url": "http:\/\/adamhutson.com\/avoid-cursors-rewrite-into-while-loops\/","datePublished": "2009-10-22T00:00:00\x2b00:00","dateModified": "2009-10-22T00:00:00\x2b00:00","description": ""
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Avoid Cursors, Rewrite Into While Loops</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2009-10-22>2009-10-22</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 392 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>2 min&nbsp;</div>
+        </div><div class="content" id="content"><div class="paragraph">
+<p>A few months back, we had a stored proc at work that was using CURSORs pretty heavily.
+It had CURSORs inside of CURSORs.
+This proc was one of our oldest, biggest, and most involved procs at over 2050 lines.
+On larger clients, it could be called thousands of times a day.
+All of the cursors were FAST_FORWARD types, which should have at least been somewhat performance friendly.
+However they were SELECTing from tables that had triggers which implicitly converted the cursor type to be STATIC.
+That&#8217;s not good, because it was locking up the SELECTed table and causing all kinds of headaches.</p>
+</div>
+<div class="paragraph">
+<p>So the decision was made to rewrite it to use table variables and WHILE LOOPs.
+This sped the proc up immensely, as measured by elapsed time, at the cost of using more in-process memory.
+You see, when a CURSOR is used, it basically creates a temp table on TempDB and iterates through it.
+With a STATIC cursor, the selected table has locks placed on it in the transaction tables.
+The CURSOR alternative is to create a table variable containing the rows that would have gone in the CURSOR and use a counter variable to loop through it using the IDENTITY column on the table variable.
+It&#8217;s still row-by-row processing, but it&#8217;s faster, more efficient, and doesn&#8217;t lock.
+The only downside is that it will use more RAM.
+So beware if you&#8217;re using SQL 2000, SQL Express, or an MSDE version as you may see performance degrade if the sqlservr process hits it&#8217;s memory ceiling.</p>
+</div>
+<div class="paragraph">
+<p>I don&#8217;t think I need to say this, but will anyway.
+Changing CURSORs into WHILE LOOPs are better, but CURSORs into a set-based query is best.
+It&#8217;s always best to do a query in a single batch as opposed to row-by-row.</p>
+</div>
+<div class="paragraph">
+<p>CURSOR code:</p>
+</div>
+<div class="paragraph">
+<p>DECLARE @SomeID INT
+DECLARE myCursor CURSOR LOCAL FAST_FORWARD FOR
+    SELECT DISTINCT SomeID
+    FROM dbo.TableA
+    WHERE ID = @ID
+OPEN myCursor
+FETCH NEXT FROM myCursor INTO @SomeID
+WHILE(@@FETCH_STATUS &lt;&gt; -1)
+BEGIN
+    --do activity
+END</p>
+</div>
+<div class="paragraph">
+<p>TABLE VARIABLE, WHILE/LOOP code:</p>
+</div>
+<div class="paragraph">
+<p>DECLARE @rowCount INT, @currentRow INT, @SomeID INT
+DECLARE @tableVariable TABLE (RowID INT IDENTITY(1,1), SomeID INT NULL)
+INSERT INTO @tableVariable(SomeID)
+    SELECT SomeID
+    FROM dbo.TableA
+    WHERE ID = @ID
+SELECT @rowCount = @@RowCount, @currentRow = 1
+WHILE @currentRow&#8656;@rowCount
+BEGIN
+    SELECT @SomeID = SomeID FROM @tableVariable WHERE RowID = @currentRow
+    --do activity
+    SET @currentRow = @currentRow + 1
+END</p>
+</div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2009-10-22</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://adamhutson.com/avoid-cursors-rewrite-into-while-loops/" data-title="Avoid Cursors, Rewrite Into While Loops" data-via="adamhutson"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://adamhutson.com/avoid-cursors-rewrite-into-while-loops/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://adamhutson.com/avoid-cursors-rewrite-into-while-loops/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/goal-explore-more-solutions-than-just-winforms/" class="prev" rel="prev" title="Goal: Explore More Solutions Than Just WinForms"><i class="fas fa-angle-left fa-fw"></i>Goal: Explore More Solutions Than Just WinForms</a>
+            <a href="/finding-the-last-reboot-time-of-a-sql-server/" class="next" rel="next" title="Finding The Last Reboot Time Of A Sql Server">Finding The Last Reboot Time Of A Sql Server<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div class="comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>

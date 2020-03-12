@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+	<meta name="generator" content="Hugo 0.66.0" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="Adam Hutson" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://adamhutson.com/" />
+<meta property="og:updated_time" content="2016-08-05T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Adam Hutson"/>
+<meta name="twitter:description" content=""/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="alternate" href="/index.xml" type="application/rss+xml" title="Adam Hutson">
+    <link rel="feed" href="/index.xml" type="application/rss+xml" title="Adam Hutson"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "url": "\/","author": {
+                "@type": "Person",
+                "name": "Adam"
+            },"name": "Adam Hutson"
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><div class="page home"><div class="home-profile"><div class="home-avatar">
+            <a href="/posts"><img
+        class="lazyload"
+        src="/svg/loading.small.min.svg"
+        data-sizes="auto"
+        data-srcset="/images/AdamHutson-Headshot-512x512.jpg,  1.5x,  2x"
+        data-src=""
+        alt="avatar"
+        title="Home" /></a>
+        </div><h2 class="home-description">Data Architect and DataOps Engineer</h2><div class="home-social-links"><a href="https://github.com/adamhutson" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github-alt fa-fw"></i></a>
+<a href="https://linkedin.com/in/adamhutson" title="LinkedIn" target="_blank" rel="noopener noreffer me"><i class="fab fa-linkedin fa-fw"></i></a>
+<a href="https://twitter.com/adamhutson" title="Twitter" target="_blank" rel="noopener noreffer me"><i class="fab fa-twitter fa-fw"></i></a>
+<a href="https://www.instagram.com/adamhutson" title="Instagram" target="_blank" rel="noopener noreffer me"><i class="fab fa-instagram fa-fw"></i></a>
+<a href="https://facebook.com/hootsawn" title="Facebook" target="_blank" rel="noopener noreffer me"><i class="fab fa-facebook fa-fw"></i></a>
+<a href="mailto:adam.hutson@yahoo.com" title="Email" rel="noopener noreffer me"><i class="far fa-envelope fa-fw"></i></a>
+</div>
+</div>
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/backing-up-cassandra-data/">Backing Up Cassandra Data</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span>&nbsp;<span class="post-publish">
+            published on&nbsp;<time datetime=2016-02-11>2016-02-11</time>
+        </span></div><div class="content">The Apache distribution of Cassandra does not automatically take backups of it’s data. However, it does include a tool to create backups. Backups in Cassandra are called “snapshots”. In the photography sense of the word, a snapshot is a picture of what the data looks like at a moment in time. Since data in Cassandra is immutable, taking a snapshot is quick, painless, and has very little impact on the system.</div><div class="post-footer">
+        <a href="/backing-up-cassandra-data/">Read More</a></div>
+</article>
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/how-to-create-a-cassandra-cluster-in-aws-part-2/">How To Create a Cassandra Cluster in AWS Part 2</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span>&nbsp;<span class="post-publish">
+            published on&nbsp;<time datetime=2016-01-08>2016-01-08</time>
+        </span></div><div class="content">In Part 1 of this brief tutorial, I shared with you how to create a cluster in Amazon’s AWS. In Part 2, we’ll discuss installing and configuring cassandra on your new cluster.
+   Log onto Virtual Machines Now that I have these three machines, how do I log onto them and start to use them.
+ From the EC2 Dashboard, select the Instances tab on the left side. This will give you an overview of all the instances you have running.</div><div class="post-footer">
+        <a href="/how-to-create-a-cassandra-cluster-in-aws-part-2/">Read More</a></div>
+</article>
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/how-to-create-a-cassandra-cluster-in-aws-part-1/">How To Create a Cassandra Cluster in AWS Part 1</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span>&nbsp;<span class="post-publish">
+            published on&nbsp;<time datetime=2015-12-23>2015-12-23</time>
+        </span></div><div class="content">In this post, I’ll walk you through creating a Cassandra cluster in Amazon’s Web Services. The first thing you’ll need to do is sign in to your Amazon Console. If you don’t have one, create an account. Once you’re logged in, from the dashboard, click on the EC2 logo, under the Compute section.
+   This is Amazon’s Elastic Compute Cloud where you can launch virtual servers, known as an Amazon EC2 instance.</div><div class="post-footer">
+        <a href="/how-to-create-a-cassandra-cluster-in-aws-part-1/">Read More</a></div>
+</article>
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/cassandra-summit-2015/">Cassandra Summit 2015</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span>&nbsp;<span class="post-publish">
+            published on&nbsp;<time datetime=2015-10-05>2015-10-05</time>
+        </span></div><div class="content">Imagine if you could create an event that was able to generate over a 4,000% increase in attendance over five years. Well, that’s exactly what DataStax has done with the annual Cassandra Summit in the Bay area.
+ *4,000% increase in attendance*   This past week was the 2015 Cassandra Summit, held in Santa Clara, was the largest NoSQL conference in the world. Prior to the start, there were over 6,100 registrations onsite.</div><div class="post-footer">
+        <a href="/cassandra-summit-2015/">Read More</a></div>
+</article>
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/simple-cassandra-instance-in-aws-ec2/">Simple Cassandra Instance In AWS EC2</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span>&nbsp;<span class="post-publish">
+            published on&nbsp;<time datetime=2014-10-24>2014-10-24</time>
+        </span></div><div class="content">I’ve been doing Cassandra development in an enterprise setting for quite a while now. And being a good little development shop (Expedia), we had Chef set up to deploy stuff for us, including Cassandra installation. Chef is great at doing just that. The downside to that is that you forgot the details of how to install Cassandra manually. Here are the steps to spin up an EC2 instance and getting a single instance of Cassandra running on it.</div><div class="post-footer">
+        <a href="/simple-cassandra-instance-in-aws-ec2/">Read More</a></div>
+</article>
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/house-of-the-rising-scrum/">House Of The Rising Scrum</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span>&nbsp;<span class="post-publish">
+            published on&nbsp;<time datetime=2014-10-07>2014-10-07</time>
+        </span></div><div class="content">Yes, I’m having fun with my blog titles twisting classic song titles. Get used to it, I think I’ll keep doing it.
+ Fire Fighting After a couple of weeks at the new job, I noticed that there wasn’t really any direction to how issues were being addressed. It seemed like whatever the current fire was or whoever was pestering the loudest was getting their issue addressed first. This also meant that current issues being worked were being dropped for the latest “emergency” issue.</div><div class="post-footer">
+        <a href="/house-of-the-rising-scrum/">Read More</a></div>
+</article>
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/the-times-they-are-a-changing/">The Times, They Are A Changing</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span>&nbsp;<span class="post-publish">
+            published on&nbsp;<time datetime=2014-09-17>2014-09-17</time>
+        </span></div><div class="content">Wow, it’s been almost three years since I blogged about anything here. I feel just a little bit bad about that, but honestly, it’s been a pretty busy time for me. My last post was about Alternatives to Relational Databases … yep, I’ve definitely been in that world for a while now. Back then, I was just starting to scratch the surface on what NoSQL even was. Looking at that post, now I realize I didn’t know nearly enough on the subject.</div><div class="post-footer">
+        <a href="/the-times-they-are-a-changing/">Read More</a></div>
+</article>
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/presentation-on-alternatives-to-relational-databases/">Presentation On Alternatives To Relational Databases</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span>&nbsp;<span class="post-publish">
+            published on&nbsp;<time datetime=2011-11-10>2011-11-10</time>
+        </span></div><div class="content">Tonight, I’m presenting to a CISQ 250 class at Drury University. The topic of the presentation is “Alternatives to Relational Databases”.
+ The following is my presentation in SlideShare.net:
+ Alternatives to Relational Databases
+ </div><div class="post-footer">
+        <a href="/presentation-on-alternatives-to-relational-databases/">Read More</a></div>
+</article>
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/sql-presentation-for-springfield-net-users-group/">Sql Presentation Fo Springfield .NET User&#39;s Group</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span>&nbsp;<span class="post-publish">
+            published on&nbsp;<time datetime=2011-06-28>2011-06-28</time>
+        </span></div><div class="content">Tonight, I gave a presentation to the Springfield .NET Users Group. I chose to present on SQL Server 2008 Development for Programmers. I tried to keep it to a level 200 type class.
+ The following is my presentation in SlideShare.net:
+ SQL Server 2008 Development for Programmers
+ </div><div class="post-footer">
+        <a href="/sql-presentation-for-springfield-net-users-group/">Read More</a></div>
+</article>
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/pci-training-equals-lessons-in-how-to-hack/">PCI Training Equals Lessons In How To Hack</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span>&nbsp;<span class="post-publish">
+            published on&nbsp;<time datetime=2011-03-17>2011-03-17</time>
+        </span></div><div class="content">Today at work, all developers were required to take an all-day training in PCI. This is the second such session that I’ve attended since I was hired. It’s all very interesting to learn about, however, it really boils down to hacking. They are teaching us all the methods that we (our websites) can be hacked. The surprising part is how much my co-workers already know about how to attack a site.</div><div class="post-footer">
+        <a href="/pci-training-equals-lessons-in-how-to-hack/">Read More</a></div>
+</article>
+<ul class="pagination"><li class="page-item ">
+                    <span class="page-link">
+                        <a href="/">1</a>
+                    </span>
+                </li><li class="page-item active">
+                    <span class="page-link">
+                        <a href="/page/2/">2</a>
+                    </span>
+                </li><li class="page-item ">
+                    <span class="page-link">
+                        <a href="/page/3/">3</a>
+                    </span>
+                </li><li class="page-item ">
+                    <span class="page-link">
+                        <a href="/page/4/">4</a>
+                    </span>
+                </li><li class="page-item ">
+                    <span class="page-link">
+                        <a href="/page/5/">5</a>
+                    </span>
+                </li></ul></div></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>

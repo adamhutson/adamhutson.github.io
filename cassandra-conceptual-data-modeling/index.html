@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Cassandra Conceptual Data Modeling | Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="Cassandra Conceptual Data Modeling" />
+<meta property="og:description" content="The task of a data modeler is to create order out of chaos without excessively distorting the truth. The finished product should be a data model that describes the structure, manipulation and integrity aspects of the data to be stored. To properly create a data model, the modeler will transform said chaos through three distinct stages. The first is a Conceptual Data Model, then a Logical Data Model, and lastly, a Physical Data Model." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/cassandra-conceptual-data-modeling/" />
+<meta property="article:published_time" content="2016-05-10T00:00:00+00:00" />
+<meta property="article:modified_time" content="2016-05-10T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cassandra Conceptual Data Modeling"/>
+<meta name="twitter:description" content="The task of a data modeler is to create order out of chaos without excessively distorting the truth. The finished product should be a data model that describes the structure, manipulation and integrity aspects of the data to be stored. To properly create a data model, the modeler will transform said chaos through three distinct stages. The first is a Conceptual Data Model, then a Logical Data Model, and lastly, a Physical Data Model."/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/cassandra-conceptual-data-modeling/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="prev" href="http://adamhutson.com/update-your-cassandra-data-model-for-30/" /><link rel="next" href="http://adamhutson.com/benefits-of-choosing-cassandra-for-your-data/" /><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Cassandra Conceptual Data Modeling",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/adamhutson.com\/cassandra-conceptual-data-modeling\/"
+        },"genre": "posts","wordcount":  878 ,
+        "url": "http:\/\/adamhutson.com\/cassandra-conceptual-data-modeling\/","datePublished": "2016-05-10T00:00:00\x2b00:00","dateModified": "2016-05-10T00:00:00\x2b00:00","description": ""
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Cassandra Conceptual Data Modeling</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2016-05-10>2016-05-10</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 878 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>5 min&nbsp;</div>
+        </div><div class="content" id="content"><div id="preamble">
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingConceptualDataModel-Final.png" alt="SchedulingConceptualDataModel Final">
+</div>
+</div>
+<div class="paragraph">
+<p>The task of a data modeler is to create order out of chaos without excessively distorting the truth.
+The finished product should be a data model that describes the structure, manipulation and integrity aspects of the data to be stored.
+To properly create a data model, the modeler will transform said chaos through three distinct stages.
+The first is a Conceptual Data Model, then a Logical Data Model, and lastly, a Physical Data Model.
+This post will cover only the first data model, Conceptual.
+There will be following posts on the Logical and Physical data models.
+It will also walk through the creation of a full blown conceptual data model for a service scheduling application to be built with a Cassandra backend.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conceptual_data_model">Conceptual Data Model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Conceptual data models describe the semantics of the scope of the data.
+This type of model is a map of concepts, their relationships and constraints.
+It first involves creating entity classes with characteristic attributes.
+Then relationship assertions are created about associations between entity classes.
+If any constraints are present on the relationships, then those are defined as well.</p>
+</div>
+<div class="paragraph">
+<p>For example, a Person could be categorized as an entity class.
+That generic class of Person could have characteristic attributes of name, gender, and age.
+We might then establish that a Person could have a relationship to another person.
+That relationship might be via genealogy or marriage.
+This is the beginning of a conceptual data model.
+Note that it has nothing to do specifically with a database.
+Rather, it’s just a conceptual schema, also known as an entity-relationship diagram.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_diagramming_conceptual_data_models">Diagramming Conceptual Data Models</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Conceptual modeling was developed by <a href="https://en.wikipedia.org/wiki/Peter_Chen">Peter Chen</a> in a paper written in 1976.
+In part of his paper, Chen described which graphical representations to use for entities,  relationships, and attributes.
+From those representations, we have the basis of how to graphically map out conceptual relationships.
+In Chen notation, as it is referred to, an entity is represented by a rectangle, a relationship by a diamond, and an attribute by an oval.</p>
+</div>
+<div class="paragraph">
+<p>Recall the above examples of a Person is a parent/child to another Person, or a Person is married to another Person.
+The following two drawings show those conceptual data models in Chen notation:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ConceptualDataModelExamples-ParentChild.png" alt="ConceptualDataModelExamples ParentChild">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/Conceptual+Data+Model+Examples-4.png" alt="Conceptual+Data+Model+Examples 4">
+</div>
+</div>
+<div class="paragraph">
+<p>The above diagrams show a couple different things.
+First, by reading it from left to right, you see that a Person is a parent to multiple or no children, indicated by the N above the relationship line.
+And reading it from right to left, a Person is a child of two and only two parents, indicated by the 2 above the relationship line.
+The second diagram shows that a person can be married to one and only one person.
+Also notice that the relationship can also have attributes, as the Birth Date and Marriage Date indicates.</p>
+</div>
+<div class="paragraph">
+<p>These are the basic notational shapes for building Conceptual Data Models with the Chen Notation.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conceptual_data_model_for_cassandra">Conceptual Data Model for Cassandra</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To build a Conceptual Data Model for Cassandra, we should have a good subject to model.
+This series of blog posts will focus on a single application.
+That is the ability to schedule an appointment for a service.
+For this application, we will need to define what all the objects, attributes, and relationships that are present around scheduling an appointment.</p>
+</div>
+<div class="paragraph">
+<p>The first part is a person, the client, who needs to schedule an appointment for a service.
+The second part will be the service that is being scheduled.
+The third will be the service provider.
+The fourth will be the employees of the provider actually doing the service.
+We’ll keep it just this simple at first and then build upon it in the future.</p>
+</div>
+<div class="paragraph">
+<p><strong>Client</strong></p>
+</div>
+<div class="paragraph">
+<p>The Client is an entity that will need to have:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Name</p>
+</li>
+<li>
+<p>Phone Number</p>
+</li>
+<li>
+<p>Gender</p>
+</li>
+<li>
+<p>Can request multiple Service Appointments</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingConceptualDataModel-Client.png" alt="SchedulingConceptualDataModel Client">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Service Appointment</strong></p>
+</div>
+<div class="paragraph">
+<p>The Service Appointment is a relationship that will need to have:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Appointment Date/Time</p>
+</li>
+<li>
+<p>Service Stated Duration</p>
+</li>
+<li>
+<p>Can be given to a single Client</p>
+</li>
+<li>
+<p>Can be assigned by a single Service Provider</p>
+</li>
+<li>
+<p>Can include a single Service</p>
+</li>
+<li>
+<p>Can be worked by a single Service Provider Employee</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingConceptualDataModel-ServiceAppointment.png" alt="SchedulingConceptualDataModel ServiceAppointment">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Service Provider</strong></p>
+</div>
+<div class="paragraph">
+<p>The Service Provider is an entity that will need to have:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Name</p>
+</li>
+<li>
+<p>Phone Number</p>
+</li>
+<li>
+<p>Can assign multiple Service Appointments</p>
+</li>
+<li>
+<p>Can provide multiple Services</p>
+</li>
+<li>
+<p>Can employ multiple Service Provider Employees</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingConceptualDataModel-ServiceProvider.png" alt="SchedulingConceptualDataModel ServiceProvider">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Services</strong></p>
+</div>
+<div class="paragraph">
+<p>The Services that are available for scheduling is an entity that will need to have:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Service Type</p>
+</li>
+<li>
+<p>Service Name</p>
+</li>
+<li>
+<p>Service Description</p>
+</li>
+<li>
+<p>Service Suggested Duration</p>
+</li>
+<li>
+<p>Can be provided by a single Service Provider</p>
+</li>
+<li>
+<p>Can be performed by multiple Service Provider Employees</p>
+</li>
+<li>
+<p>Can be included in multiple Service Appointments</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingConceptualDataModel-Service.png" alt="SchedulingConceptualDataModel Service">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Service Provider Employees</strong></p>
+</div>
+<div class="paragraph">
+<p>The Employees of the Service Provider is an entity that will need to have:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Employee Name</p>
+</li>
+<li>
+<p>Available Working Hours</p>
+</li>
+<li>
+<p>Can be employed by a single Service Provider</p>
+</li>
+<li>
+<p>Can perform to multiple Services</p>
+</li>
+<li>
+<p>Can work multiple Service Appointments</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingConceptualDataModel-ServiceProviderEmployee.png" alt="SchedulingConceptualDataModel ServiceProviderEmployee">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Final Conceptual Model</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/SchedulingConceptualDataModel-Final.png" alt="SchedulingConceptualDataModel Final">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary">Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This post covered the basics of what a conceptual data model entails, how to diagram one, and showed an in-depth example of creating one.
+This should give you a good foundation to build upon.
+Please check back soon, as I continue this path of creating the next steps in this data model, the Logical and Physical.
+Please check back soon, as I continue this path of creating the next steps in this data model, the Logical and Physical.</p>
+</div>
+</div>
+</div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2016-05-10</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://adamhutson.com/cassandra-conceptual-data-modeling/" data-title="Cassandra Conceptual Data Modeling" data-via="adamhutson"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://adamhutson.com/cassandra-conceptual-data-modeling/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://adamhutson.com/cassandra-conceptual-data-modeling/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/update-your-cassandra-data-model-for-30/" class="prev" rel="prev" title="Update your Cassandra data model for 3.0"><i class="fas fa-angle-left fa-fw"></i>Update your Cassandra data model for 3.0</a>
+            <a href="/benefits-of-choosing-cassandra-for-your-data/" class="next" rel="next" title="Benefits of choosing Cassandra for your data">Benefits of choosing Cassandra for your data<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div class="comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>

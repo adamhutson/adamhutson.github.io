@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Cassandra Partitioning &amp; Clustering Keys Explained | Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="Cassandra Partitioning &amp; Clustering Keys Explained" />
+<meta property="og:description" content="Primary and Clustering Keys should be one of the very first things you learn about when modeling Cassandra data. Most people coming from a relational background automatically think, “Yeah, I know what a Primary Key is”, and gloss right over it. Because of this, there always seems to be a lot of confusion around the topic of Primary Keys in Cassandra. With this post, I will try to demystify the confusion." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/cassandra-partitioning-and-clustering-keys-explained/" />
+<meta property="article:published_time" content="2016-06-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2016-06-01T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cassandra Partitioning &amp; Clustering Keys Explained"/>
+<meta name="twitter:description" content="Primary and Clustering Keys should be one of the very first things you learn about when modeling Cassandra data. Most people coming from a relational background automatically think, “Yeah, I know what a Primary Key is”, and gloss right over it. Because of this, there always seems to be a lot of confusion around the topic of Primary Keys in Cassandra. With this post, I will try to demystify the confusion."/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/cassandra-partitioning-and-clustering-keys-explained/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="prev" href="http://adamhutson.com/cassandra-logical-data-modeling/" /><link rel="next" href="http://adamhutson.com/cassandra-physical-data-modeling/" /><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Cassandra Partitioning \x26 Clustering Keys Explained",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/adamhutson.com\/cassandra-partitioning-and-clustering-keys-explained\/"
+        },"genre": "posts","wordcount":  1621 ,
+        "url": "http:\/\/adamhutson.com\/cassandra-partitioning-and-clustering-keys-explained\/","datePublished": "2016-06-01T00:00:00\x2b00:00","dateModified": "2016-06-01T00:00:00\x2b00:00","description": ""
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Cassandra Partitioning &amp; Clustering Keys Explained</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2016-06-01>2016-06-01</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 1621 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>8 min&nbsp;</div>
+        </div><div class="content" id="content"><div id="preamble">
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="/images/CassandraHashRing.png" alt="CassandraHashRing">
+</div>
+</div>
+<div class="paragraph">
+<p>Primary and Clustering Keys should be one of the very first things you learn about when modeling Cassandra data.
+Most people coming from a relational background automatically think, “Yeah, I know what a Primary Key is”, and gloss right over it.
+Because of this, there always seems to be a lot of confusion around the topic of Primary Keys in Cassandra.
+With this post, I will try to demystify the confusion.
+I will cover what the different types of Primary Keys are, how they can be used, what their purpose is, and how they affect your queries.</p>
+</div>
+<div class="paragraph">
+<p>For this post, I will be using CrossFit gyms as my subject matter.
+The cool thing about CrossFit gym names, in a database sense, is that they are completely unique.
+No two gyms are allowed to have the same name.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_basics">The Basics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Primary Keys are defined when you create your table.
+The most basic primary key is a single column.
+A single column is great for when you know the value that you will be searching for.
+The following table has a single column, gym_name, as the primary key:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE crossfit_gyms (
+    gym_name text,
+    city text,
+    state_province text,
+    country_code text,
+    PRIMARY KEY (gym_name)
+);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A single column Primary Key is also called a Partition Key.
+When Cassandra is deciding where in the cluster to store this particular piece of data, it will hash the partition key.
+The value of that hash dictates where the data will reside and which replicas will be responsible for it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_partition_key">Partition Key</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Partition Key is responsible for the distribution of data amongst the nodes.
+Let’s look back to an earlier post on Cassandra Data Model Basics, in which I described a four node cluster, as shown below.
+For simplicities’ sake, let’s assume hash values are between 0-100.
+When we insert the first row into the crossfit_gyms table, the value of gym_name will be hashed.
+Let’s also assume that the first record will have a hash of 34.
+That will fall into the values that Node 2’s partition is assigned.
+So the value of the Partition Key, 34, indicates the partition, 26-50, in the cluster/ring that the piece of data will be stored.
+Makes sense, huh?</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/CassandraHashRing.png" alt="CassandraHashRing">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_compound_keys">Compound Keys</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>But wait, there’s more!
+Primary keys can also be more than one column.
+A multi-column primary key is called a Compound Key.
+The following example is a similar same table as above but changes the primary keys so that you can search a little more widely.:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE crossfit_gyms_by_location (
+    country_code text,
+    state_province text,
+    city text,
+    gym_name text,
+    PRIMARY KEY (country_code, state_province, city, gym_name)
+);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This example has four columns in the Primary Key clause.
+An interesting characteristic of Compound Keys is that only the first column is considered the Partition Key.
+There rest of the columns in the Primary Key clause are Clustering Keys.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_clustering_keys">Clustering Keys</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each additional column that is added to the Primary Key clause is called a Clustering Key.
+A clustering key is responsible for sorting data within the partition.
+In our example crossfit_gyms_by_location table, country_code is the partition key with state_province, city, &amp; gym_name acting as the clustering keys.
+By default, the clustering key columns are sorted in ascending order.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_order_by">Order By</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>What if I wanted to change the default sort order from ascending to descending?
+There is an additional WITH clause that you need to add to the CREATE TABLE to make this possible.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE crossfit_gyms_by_location (
+    country_code text,
+    state_province text,
+    city text,
+    gym_name text,
+    PRIMARY KEY (country_code, state_province, city, gym_name)
+) WITH CLUSTERING ORDER BY (state_province DESC, city ASC, gym_name ASC);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we’ve changed the ordering of the Clustering Keys to sort state_province in descending order.
+Note, I did need to specify that city and gym_name is still in ascending order, even though it’s the default sort order.
+Did you notice that I did not specify what the sort is for country_code?
+Since it’s the partition key, there is nothing to sort as hashed values won’t be close to each other in the cluster.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_data_example">Data Example</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let’s insert some sample data into this crossfit_gyms_by_location table to show how things will look like on disk.
+I’m sampling from the list of locations on Crossfit’s Affiliate List.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">INSERT INTO crossfit_gyms_by_location (country_code, state_province, city, gym_name) VALUES ('USA', 'CA', 'San Francisco', 'San Francisco CrossFit');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">INSERT INTO crossfit_gyms_by_location (country_code, state_province, city, gym_name) VALUES ('USA', 'CA', 'San Francisco', 'LaLanne Fitness CrossFit');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">INSERT INTO crossfit_gyms_by_location (country_code, state_province, city, gym_name) VALUES ('USA', 'NY', 'New York', 'CrossFit NYC');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">INSERT INTO crossfit_gyms_by_location (country_code, state_province, city, gym_name) VALUES ('USA', 'NY', 'New York', 'CrossFit Metropolis');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">INSERT INTO crossfit_gyms_by_location (country_code, state_province, city, gym_name) VALUES ('USA', 'NV', 'Las Vegas', 'CrossFit Las Vegas');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">INSERT INTO crossfit_gyms_by_location (country_code, state_province, city, gym_name) VALUES ('USA', 'NV', 'Las Vegas', 'Kaizen CrossFit');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">INSERT INTO crossfit_gyms_by_location (country_code, state_province, city, gym_name) VALUES ('CAN', 'ON', 'Toronto', 'CrossFit Toronto');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">INSERT INTO crossfit_gyms_by_location (country_code, state_province, city, gym_name) VALUES ('CAN', 'ON', 'Toronto', 'CrossFit Leslieville');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">INSERT INTO crossfit_gyms_by_location (country_code, state_province, city, gym_name) VALUES ('CAN', 'BC', 'Vancouver', 'CrossFit Vancouver');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">INSERT INTO crossfit_gyms_by_location (country_code, state_province, city, gym_name) VALUES ('CAN', 'BC', 'Vancouver', 'CrossFit BC');</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we have some data to see what this all is doing.
+The first column, country_code has values of USA &amp; CAN.
+Both will be hashed and stored in different partitions.
+The way that the rows are stored in those partitions will be dictated by the WITH CLUSTERING ORDER BY clause that we defined.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql"> country_code | state_province | city          | gym_name
+--------------+----------------+---------------+--------------------------
+          CAN |             ON |       Toronto |     CrossFit Leslieville
+          CAN |             ON |       Toronto |         CrossFit Toronto
+          CAN |             BC |     Vancouver |              CrossFit BC
+          CAN |             BC |     Vancouver |       CrossFit Vancouver
+          USA |             NY |      New York |      CrossFit Metropolis
+          USA |             NY |      New York |             CrossFit NYC
+          USA |             NV |     Las Vegas |       CrossFit Las Vegas
+          USA |             NV |     Las Vegas |          Kaizen CrossFit
+          USA |             CA | San Francisco | LaLanne Fitness CrossFit
+          USA |             CA | San Francisco |   San Francisco CrossFit
+(10 rows)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_composite_key">Composite Key</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A Composite Key is when you have a multi-column Partition Key.
+The above example only used country_code for partitioning.
+This means that all records with a country_code value of “USA” are in the same partition.
+This can lead to wide-rows very quickly.
+There are just over 7,000 CrossFit gyms in the US alone.
+So by using that single column partition key, we have a row with over 7,000 combinations in that single partition.</p>
+</div>
+<div class="paragraph">
+<p>Avoiding wide rows is the perfect reason to move to a Composite Key.
+Let’s change the Partition Key to include the state_providence &amp; city columns.
+We do this by nesting parenthesis around the columns that are to be a Composite Key, as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE crossfit_gyms_by_location (
+    country_code text,
+    state_province text,
+    city text,
+    gym_name text,
+    PRIMARY KEY ((country_code, state_province, city), gym_name)
+) WITH CLUSTERING ORDER BY (gym_name ASC);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>What this does is it changes the hash value from being calculated off of only country_code.
+Now it will be calculated off of the combination of country_code, state_province, &amp; city.
+Now we aren’t sorting on those included columns.
+Each combination of the three columns have their own hash value and will be stored in completely different partition in the cluster.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_when_to_use_different_key_types">Why &amp; When to Use Different Key Types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I’ve shown you four different ways to use keys in table creations.
+But why would you want to use one over another?
+It all depends on the queries that you need to accommodate.
+With the topic of CrossFit gym locations, I can think of a couple different ways that I may want to search for a gym.</p>
+</div>
+<div class="paragraph">
+<p>First example that comes to mind is, I know the name of the gym I’m needing more information on.
+I want to select from a table where the name equals that known gym name.
+This scenario would be ideal for a single column partition key.</p>
+</div>
+<div class="paragraph">
+<p>Second example that comes to mind is, I’m traveling to a city and need to find a gym there to get my workout in at.
+I want to select from a table where I can specify the country, state, &amp; city.
+I would expect a list of all the available gyms.
+This scenario is great for the Composite Key.
+It allows me to filter on the three parts in the key and Cassandra can quickly locate the information that I’m searching for.</p>
+</div>
+<div class="paragraph">
+<p>Third example that comes to mind is, I’ve done the previous example and there aren’t any gyms in my city I’m looking for, so I need to only search on country and state, or maybe just country.
+This scenario is ideal for the wide row example where we have a single partition key, and a bunch of clustering keys for narrowing the results.
+I can select from a table where I know the country or where I know the country &amp; state.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary">Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Choosing keys for your Cassandra tables can be tricky, but I hope to have helped shine some light on the details behind the decision.
+I covered what the different types of keys are, how they can be used, what their purpose is, and how they affect your queries.
+The following is a quick recap on the subject:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Primary Keys, also known as Partition Keys, are for locating your data to a partition in the cluster.</p>
+</li>
+<li>
+<p>Compound Keys are for including other columns in the filter but not affecting the partition.</p>
+</li>
+<li>
+<p>Clustering Keys are for sorting your data on the partition.</p>
+</li>
+<li>
+<p>Composite Keys are for including more columns in the calculation of the partition value.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Now go out and design some tables with different keys.
+The best way to learn is trial and error.
+To read more, check out my post on Data Model Basics.
+Happy Data Modeling!</p>
+</div>
+</div>
+</div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2016-06-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://adamhutson.com/cassandra-partitioning-and-clustering-keys-explained/" data-title="Cassandra Partitioning &amp; Clustering Keys Explained" data-via="adamhutson"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://adamhutson.com/cassandra-partitioning-and-clustering-keys-explained/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://adamhutson.com/cassandra-partitioning-and-clustering-keys-explained/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/cassandra-logical-data-modeling/" class="prev" rel="prev" title="Cassandra Logical Data Modeling"><i class="fas fa-angle-left fa-fw"></i>Cassandra Logical Data Modeling</a>
+            <a href="/cassandra-physical-data-modeling/" class="next" rel="next" title="Cassandra Physical Data Modeling">Cassandra Physical Data Modeling<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div class="comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>

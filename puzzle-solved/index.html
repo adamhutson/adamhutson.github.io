@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Puzzle Solved | Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="Puzzle Solved" />
+<meta property="og:description" content="I have been really getting into RSS feeds lately and have subscribed to alot of ones that interest me. I personally have been using the Google Reader on the iGoogle homepage. It&#8217;s a neat way to keep tabs on my varied readings. One that caught my eye was a challenge by Pinal Dave. Pinal challenged his readers to solve a puzzle that would return the size of each index for a speficied table." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/puzzle-solved/" />
+<meta property="article:published_time" content="2009-11-20T00:00:00+00:00" />
+<meta property="article:modified_time" content="2009-11-20T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Puzzle Solved"/>
+<meta name="twitter:description" content="I have been really getting into RSS feeds lately and have subscribed to alot of ones that interest me. I personally have been using the Google Reader on the iGoogle homepage. It&#8217;s a neat way to keep tabs on my varied readings. One that caught my eye was a challenge by Pinal Dave. Pinal challenged his readers to solve a puzzle that would return the size of each index for a speficied table."/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/puzzle-solved/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="prev" href="http://adamhutson.com/nullabitlity-and-default-constraint-behavior/" /><link rel="next" href="http://adamhutson.com/money-vs-decimal-data-types-in-sql-server/" /><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Puzzle Solved",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/adamhutson.com\/puzzle-solved\/"
+        },"genre": "posts","wordcount":  322 ,
+        "url": "http:\/\/adamhutson.com\/puzzle-solved\/","datePublished": "2009-11-20T00:00:00\x2b00:00","dateModified": "2009-11-20T00:00:00\x2b00:00","description": ""
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Puzzle Solved</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2009-11-20>2009-11-20</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 322 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>2 min&nbsp;</div>
+        </div><div class="content" id="content"><div class="paragraph">
+<p>I have been really getting into RSS feeds lately and have subscribed to alot of ones that interest me.
+I personally have been using the Google Reader on the iGoogle homepage.
+It&#8217;s a neat way to keep tabs on my varied readings.
+One that caught my eye was a challenge by Pinal Dave.
+Pinal challenged his readers to solve a puzzle that would return the size of each index for a speficied table.</p>
+</div>
+<div class="paragraph">
+<p>He started with a simple sp_spaceused [tableName] command that returned the index_size of the table and a selection from sys.indexes that returned a list of all of the indexes on said table.
+But it was up to his readers to figure out how to get the index_size of each index, so that the sum of all of them would add up to teh result from sp_spaceused.
+Read the article to follow along.
+My answer is the 7th down (mine is simpler and suprising different from the other answers).
+Pinal will post the solution with due credit on his blog.
+Hopefully, I did well, seeing that he has almost 11 million readers.</p>
+</div>
+<div class="paragraph">
+<p>Here is a quick overview of the puzzle:</p>
+</div>
+<div class="paragraph">
+<p>My answer was:
+DECLARE
+      @objname nvarchar(776),
+      @id int</p>
+</div>
+<div class="paragraph">
+<p>SELECT
+      @objname = 'TableToExamine',
+      @id = object_id(@objname)</p>
+</div>
+<div class="paragraph">
+<p>SELECT
+      i.*,
+      CASE
+            WHEN ps.usedpages &gt; ps.pages THEN (ps.usedpages - ps.pages)
+            ELSE 0
+      END * 8 indexsize
+FROM sys.indexes i
+INNER JOIN (
+      SELECT
+            OBJECT_ID,
+            index_id,
+            SUM (used_page_count) usedpages,
+            SUM (
+                  CASE
+                        WHEN (index_id &lt; 2) THEN (in_row_data_page_count + lob_used_page_count + row_overflow_used_page_count)
+                        ELSE lob_used_page_count + row_overflow_used_page_count
+                  END
+            )pages
+      FROM sys.dm_db_partition_stats
+      WHERE object_id = @id
+      GROUP BY object_id, index_id
+) ps on i.index_id = ps.index_id
+WHERE i.object_id = @id</p>
+</div>
+<div class="paragraph">
+<p>Well, that wasn&#8217;t my exact answer.
+I had a variable declaration that I really didn&#8217;t need, but hey, I did it in like 5 mins.
+So this version is a little cleaner. :)</p>
+</div>
+<div class="paragraph">
+<p>ENJOY!  And in the spirit of fun, See if you can do it better!</p>
+</div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2009-11-20</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://adamhutson.com/puzzle-solved/" data-title="Puzzle Solved" data-via="adamhutson"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://adamhutson.com/puzzle-solved/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://adamhutson.com/puzzle-solved/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/nullabitlity-and-default-constraint-behavior/" class="prev" rel="prev" title="Nullability And Default Constraint Behavior"><i class="fas fa-angle-left fa-fw"></i>Nullability And Default Constraint Behavior</a>
+            <a href="/money-vs-decimal-data-types-in-sql-server/" class="next" rel="next" title="Money Vs Decimal Data Types In Sql Server">Money Vs Decimal Data Types In Sql Server<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div class="comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>

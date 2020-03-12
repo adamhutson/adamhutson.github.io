@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Cassandra Summit 2015 | Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="Cassandra Summit 2015" />
+<meta property="og:description" content="Imagine if you could create an event that was able to generate over a 4,000% increase in attendance over five years. Well, that’s exactly what DataStax has done with the annual Cassandra Summit in the Bay area.
+ *4,000% increase in attendance*   This past week was the 2015 Cassandra Summit, held in Santa Clara, was the largest NoSQL conference in the world. Prior to the start, there were over 6,100 registrations onsite." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/cassandra-summit-2015/" />
+<meta property="article:published_time" content="2015-10-05T00:00:00+00:00" />
+<meta property="article:modified_time" content="2015-10-05T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cassandra Summit 2015"/>
+<meta name="twitter:description" content="Imagine if you could create an event that was able to generate over a 4,000% increase in attendance over five years. Well, that’s exactly what DataStax has done with the annual Cassandra Summit in the Bay area.
+ *4,000% increase in attendance*   This past week was the 2015 Cassandra Summit, held in Santa Clara, was the largest NoSQL conference in the world. Prior to the start, there were over 6,100 registrations onsite."/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/cassandra-summit-2015/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="prev" href="http://adamhutson.com/simple-cassandra-instance-in-aws-ec2/" /><link rel="next" href="http://adamhutson.com/how-to-create-a-cassandra-cluster-in-aws-part-1/" /><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Cassandra Summit 2015",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/adamhutson.com\/cassandra-summit-2015\/"
+        },"genre": "posts","wordcount":  1226 ,
+        "url": "http:\/\/adamhutson.com\/cassandra-summit-2015\/","datePublished": "2015-10-05T00:00:00\x2b00:00","dateModified": "2015-10-05T00:00:00\x2b00:00","description": ""
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Cassandra Summit 2015</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2015-10-05>2015-10-05</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 1226 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>6 min&nbsp;</div>
+        </div><div class="content" id="content"><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Imagine if you could create an event that was able to generate over a 4,000% increase in attendance over five years.
+Well, that’s exactly what DataStax has done with the annual Cassandra Summit in the Bay area.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>*4,000% increase in attendance*</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This past week was the 2015 Cassandra Summit, held in Santa Clara, was the largest NoSQL conference in the world.
+Prior to the start, there were over 6,100 registrations onsite.
+Considering that the very first Cassandra Summit was only five years ago, it had a whopping 145 attendees.
+What an amazing testament to the strength of Cassandra in the community.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>*Largest NoSQL conference in the world*</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There were many huge names that helped sponsor the event this year which allowed for a free admission price.
+If you were lucky enough to make the annual trek to California, you were overwhelmed with nearly 150 sessions of fantastic content by some of the brightest members in the community.
+All volunteer work too.</p>
+</div>
+<div class="paragraph">
+<p>This was the first year that DataStax was flooded with submissions of people wanting to have the opportunity to speak at the Summit.
+They actually had to turn people’s paper submissions down.
+Amazing!
+I feel so lucky to have gotten the chance to attend.
+The networking, education, and sense of community is over-whelming</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_keynote">Keynote</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Every year, the Summit is kicked off by a keynote that includes “Where the Industry is Going” speech by Billy Bosworth,
+image::/images/cassandra-summit-keynote.jpg[] and a “State of Cassandra” speech by Jonathan Ellis.
+This year, there was a new-comer to the stage.
+Microsoft’s EVP of Cloud, Scott Guthrie, was there to tell the community that Microsoft has joined in Cassandra fun.
+Wait, what?</p>
+</div>
+<div class="paragraph">
+<p>Microsoft &amp; Cassandra sound like oil &amp; vinegar.
+Even Billy pointed out that most of us in the community, are all die-hard Unix users that loathe having to get on a Windows platform.
+Scott was there to sway our opinion as Microsoft is changing it’s course to favor the open source community.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sessions">Sessions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This year, there were so many sessions for learning that you really had to be selective in what you could attend.
+A lot of image::/images/cassandra-summit-session1.jpg[] the sessions that I tried to attend were so popular that they had to close when maximum room occupancy was reached.
+DataStax anticipated this and provided attendees to a chance to purchase a Priority Pass.
+It would give you first access to all sessions, which could get you into the popular sessions before they closed.
+Great idea, if you ask me.</p>
+</div>
+<div class="paragraph">
+<p>I chose to not attend a ton of the sessions.
+I took the opportunity to mingle and network amongst the crowd as much as I could.
+It also gave me a chance to meet people in-person that I’ve interacted with online for years.
+Getting to catch up and share a beer with so many Cassandra-ians in a way only the Summit can provide.</p>
+</div>
+<div class="paragraph">
+<p>Some of the sessions I tried to attend were closed due to popularity, image::/images/cassandra-summit-networking1.jpg[] but I was able to make it into others.
+Probably the most memorable one, too me, was CrowdStrike’s “1 million writes per second on 60 nodes with Cassandra and EBS”.
+What a turn in traditional thinking that you can’t do high performance on Elastic Block Storage.
+Up until now, it was Netflix’s benchmark that was the standard for how to achieve 1 million writes per second.
+But it required a lot more nodes that 60 and had to use SSDs to get that kind of high IOPS.
+Just goes to show what the community is capable of.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_certifications">Certifications</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="/images/cassandra-summit-certification1.jpg" alt="cassandra summit certification1">
+</div>
+</div>
+<div class="paragraph">
+<p>In addition to the sessions, DataStax provided a day before the Summit for people to get take Cassandra certification tests.
+Just in that one day, over 500 people were able to receive certifications like Cassandra Certified Developer &amp; Certified Administrator.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_slides">Slides</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Every year, DataStax tries to record most of the Summit’s sessions so they can post them to Planet Cassandra for the community to enjoy.
+That way you are able to see  the sessions that you missed image::/images/cassandra-summit-slides1.jpg[] out on.
+Some of the breakouts and booth presentations are not recorded.
+Those you just have to be there to see live.
+All the recordings &amp; slides take a little while to gather from the speakers, so it’s not accessible for a while after the Summit.
+A lot of the speakers will post their slides online somewhere before that the sessions are published.
+I scoured the internets for all the slideshares I could find.
+Of the nearly 150 sessions, I was able to find slides for only 40.</p>
+</div>
+<div class="paragraph">
+<p>Here is the list of available slides (in no particular order).  Enjoy!</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Billy Bosworth, Jonathan Ellis, &amp; Scott Guthrie – Keynote
+<a href="http://www.slideshare.net/planetcassandra/cassandra-summit-2015-keynote" class="bare">http://www.slideshare.net/planetcassandra/cassandra-summit-2015-keynote</a></p>
+</li>
+<li>
+<p>Nate McCall – Hardening Apache Cassandra for Compliance (or Paranoia)
+<a href="http://www.slideshare.net/zznate/hardening-cassandra-for-compliance-or-paranoia" class="bare">http://www.slideshare.net/zznate/hardening-cassandra-for-compliance-or-paranoia</a></p>
+</li>
+<li>
+<p>Evan Chan –  Breakthrough OLAP
+<a href="http://velvia.github.io/presentations/2015-breakthrough-olap-cass-spark/index.html#/" class="bare">http://velvia.github.io/presentations/2015-breakthrough-olap-cass-spark/index.html#/</a></p>
+</li>
+<li>
+<p>Caleb Rackliffe – Intro to DSE Search
+<a href="http://www.slideshare.net/CalebRackliffe/cassandra-summit-2015-intro-to-dse-search" class="bare">http://www.slideshare.net/CalebRackliffe/cassandra-summit-2015-intro-to-dse-search</a></p>
+</li>
+<li>
+<p>Carl Yeksigian – Materialized Views
+<a href="http://www.slideshare.net/carlyeks/cassandra-materialized-views" class="bare">http://www.slideshare.net/carlyeks/cassandra-materialized-views</a></p>
+</li>
+<li>
+<p>Avi Kivity – Scylla 1 Million CQL operations per second per server
+<a href="http://www.slideshare.net/AviKivity/scylla-1-million-cql-operations-per-second-per-server" class="bare">http://www.slideshare.net/AviKivity/scylla-1-million-cql-operations-per-second-per-server</a></p>
+</li>
+<li>
+<p>João Paulo Eiti Kimura – A Change of Seasons
+<a href="http://www.slideshare.net/eitikimura/cassandra-summit-2015-a-change-of-seasons" class="bare">http://www.slideshare.net/eitikimura/cassandra-summit-2015-a-change-of-seasons</a></p>
+</li>
+<li>
+<p>Aaron Morton – Steady State Data Size with Compaction Tombstones and TTL
+<a href="http://www.slideshare.net/aaronmorton/cassandra-sf-2015-steady-state-data-size-with-compaction-tombstones-and-ttl" class="bare">http://www.slideshare.net/aaronmorton/cassandra-sf-2015-steady-state-data-size-with-compaction-tombstones-and-ttl</a></p>
+</li>
+<li>
+<p>Aaron Morton – Repeatable, Scalable, Reliable, Observable Cassandra
+<a href="http://www.slideshare.net/aaronmorton/cassandra-sf-2015-repeatable-scalable-reliable-observable-cassandra" class="bare">http://www.slideshare.net/aaronmorton/cassandra-sf-2015-repeatable-scalable-reliable-observable-cassandra</a></p>
+</li>
+<li>
+<p>Mick Semb Wever – Distributed Tracing from Application to Database
+<a href="http://thelastpickle.com/files/2015-09-24-using-zipkin-for-full-stack-tracing-including-cassandra/presentation/tlp-reveal.js/tlp-cassandra-zipkin.html#/" class="bare">http://thelastpickle.com/files/2015-09-24-using-zipkin-for-full-stack-tracing-including-cassandra/presentation/tlp-reveal.js/tlp-cassandra-zipkin.html#/</a></p>
+</li>
+<li>
+<p>Carlos Alonso – Troubleshooting Cassandra performance issues as a developer
+<a href="http://www.slideshare.net/CarlosAlonsoPrez/case-study-troubleshooting-cassandra-performance-issues-as-a-developer" class="bare">http://www.slideshare.net/CarlosAlonsoPrez/case-study-troubleshooting-cassandra-performance-issues-as-a-developer</a></p>
+</li>
+<li>
+<p>Gary Stewart &amp; Christopher Reedijk – Exploiting Hotel Cassandra
+<a href="http://www.slideshare.net/ING-IT/exploiting-hotel-cassandra-53313082" class="bare">http://www.slideshare.net/ING-IT/exploiting-hotel-cassandra-53313082</a></p>
+</li>
+<li>
+<p>Rekha Joshi – Reporting From Trenches: Using Cassandra Effectively
+<a href="http://www.slideshare.net/peas2bees/cassandrasummit2015usingcassandraeffectively" class="bare">http://www.slideshare.net/peas2bees/cassandrasummit2015usingcassandraeffectively</a></p>
+</li>
+<li>
+<p>Russell Spitzer – Spark Cassandra Connector: Past, Present, and Future
+<a href="http://www.slideshare.net/RussellSpitzer/spark-cassandra-connector-past-present-and-future" class="bare">http://www.slideshare.net/RussellSpitzer/spark-cassandra-connector-past-present-and-future</a></p>
+</li>
+<li>
+<p>Robbie Strickland – Lambda at Weather Scale
+<a href="http://www.slideshare.net/rastrick/lambda-at-weather-scale-cassandra-summit-2015" class="bare">http://www.slideshare.net/rastrick/lambda-at-weather-scale-cassandra-summit-2015</a></p>
+</li>
+<li>
+<p>Sebastián Estévez – Lessons from &gt;100 Startups
+<a href="http://www.sestevez.com/sestevez/curriculum/dse/summit-2015/build/asciidoc/deckjs/slides.html" class="bare">http://www.sestevez.com/sestevez/curriculum/dse/summit-2015/build/asciidoc/deckjs/slides.html</a></p>
+</li>
+<li>
+<p>Ben Bromhead – Securing Cassandra
+<a href="http://www.slideshare.net/BenBromhead/cassandra-and-security" class="bare">http://www.slideshare.net/BenBromhead/cassandra-and-security</a></p>
+</li>
+<li>
+<p>Benjamin Lerer – A deep look at the cql where clause
+<a href="http://www.slideshare.net/BenjaminLerer1/a-deep-look-at-the-cql-where-clause-53138465" class="bare">http://www.slideshare.net/BenjaminLerer1/a-deep-look-at-the-cql-where-clause-53138465</a></p>
+</li>
+<li>
+<p>Roopa Tangirala – Netflix’s Big Leap from Oracle to C*
+<a href="http://www.slideshare.net/RoopaTangirala/netflixs-big-leap-from-oracle-to-cassandra" class="bare">http://www.slideshare.net/RoopaTangirala/netflixs-big-leap-from-oracle-to-cassandra</a></p>
+</li>
+<li>
+<p>Jeff Jirsa – Real World DTCS For Operators
+<a href="http://www.slideshare.net/JeffJirsa1/cassandra-summit-2015-real-world-dtcs-for-operators" class="bare">http://www.slideshare.net/JeffJirsa1/cassandra-summit-2015-real-world-dtcs-for-operators</a></p>
+</li>
+<li>
+<p>Martin Zapletal – Cassandra as event sourced journal for big data analytics
+<a href="http://www.slideshare.net/AnirvanChakraborty1/cassandra-as-event-sourced-journal-for-big-data-analytics" class="bare">http://www.slideshare.net/AnirvanChakraborty1/cassandra-as-event-sourced-journal-for-big-data-analytics</a></p>
+</li>
+<li>
+<p>Joel Knighton – Testing Cassandra Guarantees under Diverse Failure Modes with Jepsen
+<a href="http://www.slideshare.net/jkni/testing-cassandra-guarantees-under-diverse-failure-modes-with-jepsen-53168992" class="bare">http://www.slideshare.net/jkni/testing-cassandra-guarantees-under-diverse-failure-modes-with-jepsen-53168992</a></p>
+</li>
+<li>
+<p>Joe Stein – Real-time Log Analysis with Apache Mesos, Kafka and Cassandra
+<a href="http://www.slideshare.net/charmalloc/realtime-log-analysis-with-apache-mesos-kafka-and-cassandra" class="bare">http://www.slideshare.net/charmalloc/realtime-log-analysis-with-apache-mesos-kafka-and-cassandra</a></p>
+</li>
+<li>
+<p>Julien Anguenot – Leveraging Cassandra for real-time multi-datacenter public cloud analytics
+<a href="http://www.slideshare.net/anguenot/leveraging-cassandra-for-realtime-multidatacenter-public-cloud-analytics" class="bare">http://www.slideshare.net/anguenot/leveraging-cassandra-for-realtime-multidatacenter-public-cloud-analytics</a></p>
+</li>
+<li>
+<p>Jon Haddad – Enter the Snake Pit for Fast and Easy Spark
+<a href="http://www.slideshare.net/JonHaddad/enter-the-snake-pit-for-fast-and-easy-spark" class="bare">http://www.slideshare.net/JonHaddad/enter-the-snake-pit-for-fast-and-easy-spark</a></p>
+</li>
+<li>
+<p>Peter Nichol – Why DBaaS is taking off with Cassandra
+<a href="http://www.slideshare.net/planetcassandra/instaclustr-why-dbaas-is-taking-off-with-cassandra" class="bare">http://www.slideshare.net/planetcassandra/instaclustr-why-dbaas-is-taking-off-with-cassandra</a></p>
+</li>
+<li>
+<p>Rob Bagby &amp; Jesus Aguilar – Building a massively scalable system with DataStax and Microsoft’s next generation Paas infrastructure
+<a href="http://www.slideshare.net/planetcassandra/microsoft-building-a-massively-scalable-system-with-datastax-and-microsofts-next-generation-paas-infrastructure" class="bare">http://www.slideshare.net/planetcassandra/microsoft-building-a-massively-scalable-system-with-datastax-and-microsofts-next-generation-paas-infrastructure</a></p>
+</li>
+<li>
+<p>Vinay Sridhar – Persistent Memory and Cassandra
+<a href="http://www.slideshare.net/planetcassandra/sandisk-persistent-memory-and-cassandra" class="bare">http://www.slideshare.net/planetcassandra/sandisk-persistent-memory-and-cassandra</a></p>
+</li>
+<li>
+<p>Kiyu Gabriel &amp; Adam Mollenkopf – When and Where are all the Things: Geotemporal IoT Search and Analytics
+<a href="http://www.slideshare.net/planetcassandra/datastax-and-esri-geotemporal-iot-search-and-analytics" class="bare">http://www.slideshare.net/planetcassandra/datastax-and-esri-geotemporal-iot-search-and-analytics</a></p>
+</li>
+<li>
+<p>Frank Ober &amp; Al Tobey – 3D XPoint and NVME Technology Cassandra Storage Comparison
+<a href="http://www.slideshare.net/planetcassandra/intel-and-datastax-3d-xpoint-and-nvme-technology-cassandra-storage-comparison" class="bare">http://www.slideshare.net/planetcassandra/intel-and-datastax-3d-xpoint-and-nvme-technology-cassandra-storage-comparison</a></p>
+</li>
+<li>
+<p>Vlad Giverts – Building Large Scale Machine Learning Pipelines
+<a href="http://www.slideshare.net/planetcassandra/workday-building-large-scale-machine-learning-pipelines" class="bare">http://www.slideshare.net/planetcassandra/workday-building-large-scale-machine-learning-pipelines</a></p>
+</li>
+<li>
+<p>Victor Anjos – Cassandra Installation to Optimization
+<a href="http://www.slideshare.net/planetcassandra/ficstar-software-cassandra-installation-to-optimization" class="bare">http://www.slideshare.net/planetcassandra/ficstar-software-cassandra-installation-to-optimization</a></p>
+</li>
+<li>
+<p>Ben Whitehead &amp; Robert Stupp – A New Way to Run Cassandra
+<a href="http://www.slideshare.net/planetcassandra/mesosphere-and-contentteam-a-new-way-to-run-cassandra" class="bare">http://www.slideshare.net/planetcassandra/mesosphere-and-contentteam-a-new-way-to-run-cassandra</a></p>
+</li>
+<li>
+<p>Stephen Mallette – What’s New in Apache TinkerPop
+<a href="http://www.slideshare.net/planetcassandra/whats-new-in-apache-tinkerpop-the-graph-computing-framework" class="bare">http://www.slideshare.net/planetcassandra/whats-new-in-apache-tinkerpop-the-graph-computing-framework</a></p>
+</li>
+<li>
+<p>Chris Fregly – Real time Advanced Analytics with Spark and Cassandra
+<a href="http://www.slideshare.net/cfregly/cassandra-summit-sept-2015-real-time-advanced-analytics-with-spark-and-cassandra-recommendations-machine-learning-graph-processing" class="bare">http://www.slideshare.net/cfregly/cassandra-summit-sept-2015-real-time-advanced-analytics-with-spark-and-cassandra-recommendations-machine-learning-graph-processing</a></p>
+</li>
+<li>
+<p>Luke Tillman – Relational Scaling and the Temple of Gloom
+<a href="http://www.slideshare.net/LukeTillman/relational-scaling-and-the-temple-of-gloom-from-cassandra-summit-2015" class="bare">http://www.slideshare.net/LukeTillman/relational-scaling-and-the-temple-of-gloom-from-cassandra-summit-2015</a></p>
+</li>
+<li>
+<p>Joe Stein – Real-Time Log Analysis with Apache Mesos, Docker, Kafka, Spark, Cassandra, and Solr at scale
+<a href="http://www.slideshare.net/charmalloc/realtime-log-analysis-with-apache-mesos-kafka-and-cassandra" class="bare">http://www.slideshare.net/charmalloc/realtime-log-analysis-with-apache-mesos-kafka-and-cassandra</a></p>
+</li>
+<li>
+<p>Gustavo Rene Antunez &amp; Carlos Rolo – My First 100 days with a Cassandra Cluster
+<a href="http://www.slideshare.net/planetcassandra/pythian-my-first-100-days-with-a-cassandra-cluster" class="bare">http://www.slideshare.net/planetcassandra/pythian-my-first-100-days-with-a-cassandra-cluster</a></p>
+</li>
+<li>
+<p>Aki Colovic – Skinny on Wide Rows
+<a href="http://www.slideshare.net/planetcassandra/signal-digital-the-skinny-on-wide-rows" class="bare">http://www.slideshare.net/planetcassandra/signal-digital-the-skinny-on-wide-rows</a></p>
+</li>
+<li>
+<p>Ben Slater – When and how to migrate from a relational database to Cassandra
+<a href="http://www.slideshare.net/planetcassandra/instaclustr-when-and-how-to-migrate-from-a-relational-database-to-cassandra" class="bare">http://www.slideshare.net/planetcassandra/instaclustr-when-and-how-to-migrate-from-a-relational-database-to-cassandra</a>
+———————–</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Image references</p>
+</div>
+<div class="paragraph">
+<p><a href="https://twitter.com/aaronmorton/status/648333415138246656" class="bare">https://twitter.com/aaronmorton/status/648333415138246656</a></p>
+</div>
+<div class="paragraph">
+<p><a href="https://twitter.com/PlanetCassandra/status/647081335689900032" class="bare">https://twitter.com/PlanetCassandra/status/647081335689900032</a></p>
+</div>
+<div class="paragraph">
+<p><a href="https://twitter.com/DataStax/status/646755309369868290" class="bare">https://twitter.com/DataStax/status/646755309369868290</a></p>
+</div>
+<div class="paragraph">
+<p><a href="https://twitter.com/DataStax/status/646501543810875392" class="bare">https://twitter.com/DataStax/status/646501543810875392</a></p>
+</div>
+<div class="paragraph">
+<p><a href="https://twitter.com/LukeTillman/status/646365406093946884" class="bare">https://twitter.com/LukeTillman/status/646365406093946884</a></p>
+</div>
+</div>
+</div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2015-10-05</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://adamhutson.com/cassandra-summit-2015/" data-title="Cassandra Summit 2015" data-via="adamhutson"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://adamhutson.com/cassandra-summit-2015/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://adamhutson.com/cassandra-summit-2015/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/simple-cassandra-instance-in-aws-ec2/" class="prev" rel="prev" title="Simple Cassandra Instance In AWS EC2"><i class="fas fa-angle-left fa-fw"></i>Simple Cassandra Instance In AWS EC2</a>
+            <a href="/how-to-create-a-cassandra-cluster-in-aws-part-1/" class="next" rel="next" title="How To Create a Cassandra Cluster in AWS Part 1">How To Create a Cassandra Cluster in AWS Part 1<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div class="comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>

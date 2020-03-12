@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Cassandra Data Model Basics | Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="Cassandra Data Model Basics" />
+<meta property="og:description" content="Data. Model. What an odd combination of words. To someone outside of the world of I.T., it doesn’t make much sense. But to those people that have written software or attempted to store information, it’s a phrase all too often discussed. A data model, as defined by wiki, “is an abstract model that organizes elements of data and standardizes how they relate to one another and to properties of the real world”." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/cassandra-data-model-basics/" />
+<meta property="article:published_time" content="2016-04-20T00:00:00+00:00" />
+<meta property="article:modified_time" content="2016-04-20T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cassandra Data Model Basics"/>
+<meta name="twitter:description" content="Data. Model. What an odd combination of words. To someone outside of the world of I.T., it doesn’t make much sense. But to those people that have written software or attempted to store information, it’s a phrase all too often discussed. A data model, as defined by wiki, “is an abstract model that organizes elements of data and standardizes how they relate to one another and to properties of the real world”."/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/cassandra-data-model-basics/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="prev" href="http://adamhutson.com/restoring-cassandra-data/" /><link rel="next" href="http://adamhutson.com/update-your-cassandra-data-model-for-30/" /><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Cassandra Data Model Basics",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/adamhutson.com\/cassandra-data-model-basics\/"
+        },"genre": "posts","wordcount":  1201 ,
+        "url": "http:\/\/adamhutson.com\/cassandra-data-model-basics\/","datePublished": "2016-04-20T00:00:00\x2b00:00","dateModified": "2016-04-20T00:00:00\x2b00:00","description": ""
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Cassandra Data Model Basics</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2016-04-20>2016-04-20</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 1201 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>6 min&nbsp;</div>
+        </div><div class="content" id="content"><div id="preamble">
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="/images/data-modeling-word-cloud.jpg" alt="data modeling word cloud">
+</div>
+</div>
+<div class="paragraph">
+<p>Data.
+Model.
+What an odd combination of words.
+To someone outside of the world of I.T., it doesn’t make much sense.
+But to those people that have written software or attempted to store information, it’s a phrase all too often discussed.
+A data model, as defined by wiki, “is an abstract model that organizes elements of data and standardizes how they relate to one another and to properties of the real world”.</p>
+</div>
+<div class="paragraph">
+<p>Data modeling has evolved over the years as technology has changed.
+The requirements of today’s data model reflect the structure of the machine(s) that it runs upon.
+When the norm was a mainframe or a single machine, then a relational database was efficient.
+However, today’s norm is to have a global network of machines that can all provide the same data as efficiently as if it were a single machine.</p>
+</div>
+<div class="paragraph">
+<p>Enter Apache Cassandra.
+The goal is to have the most efficient way of coordinating changing distributed data.
+The purpose of this post is to discuss how to model your data for evenly distributed storage and efficient retrieval using Cassandra.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_cassandra_stores_data">How Cassandra stores data</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Cassandra is a key-value store.
+Data is organized into rows of multiple columns/values.
+Rows belong to a single node and are replicated to other nodes in the cluster.
+The cluster is organized into a ring of nodes with each node having an equal part of the of hash values.
+Each row’s key is hashed to determine where in the ring the row’s data should be stored.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/RowKeyColumns.png" alt="RowKeyColumns">
+</div>
+</div>
+<div class="paragraph">
+<p>Visuals are always the best way to get a point across, in my opinion.
+So imagine that we have a four node Cassandra cluster.
+It has a single keyspace with a replication factor of three.
+In that keyspace, there is a single table.
+For every record that is inserted, Cassandra will hash the value of the row key in that table to determine which nodes are responsible for that row.
+For simplicities sake, let’s use 0-100 as possible hash values.
+In reality, the hash will be something like a 128-bit (or larger) value, but examples are so much harder when you have to reference that nonsense.
+Node 1 is responsible for hash values 1-25, Node 2 is responsible for hash values 26-50, and so on.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/CassandraHashRing.png" alt="CassandraHashRing">
+</div>
+</div>
+<div class="paragraph">
+<p>The first row that we insert gets hashed.
+Let’s say that the hash has a value of 72.
+Using the below diagram, that row will belong to Node 4 and will be replicated to Nodes 1 &amp; 2.
+Replication always goes clockwise in a cluster.
+Then we add another row to the table.
+It’s hash has a value of 31, which will belong to Node 2, 3, &amp; 4.
+We keep adding records and the hashes are figured and each of the nodes randomly are assigned rows to maintain.
+That’s the entire concept behind how Cassandra stores data.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_goals_for_data_placement">Goals for data placement</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The hope is that every node in your cluster has an equal responsibility for maintaining a portion of the entire data set.
+When determining what each table’s primary key will be, you want to make sure that the key’s cardinality is high enough to not cause hot spots on any of the drives.
+When it comes to reading data off the disk, you will want to be seeking as few partitions as possible.</p>
+</div>
+<div class="paragraph">
+<p>It would be horrible if half of your inserted values had a hash value between 1-25.
+If that were to happen, then Nodes 1, 2, &amp; 3 would have a much larger portion of the responsibility for the data set.
+When reading those rows back out from Cassandra, those 3 nodes would be doing a multiple more of work.
+With only 4 nodes, it may not seem like a huge deal, but imagine a cluster of 16, and 3 nodes were overly loaded.</p>
+</div>
+<div class="paragraph">
+<p>The CPUs on those machines would be working harder which would lead to higher read latencies, which may lead to block or dropped mutations.
+Horrible stuff, I know.
+All of which would have been preventable with the correct primary key definition in the data model.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_start_with_your_query">Start with your query</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The best advice that I ever received for designing a good data model is to “Start with your query”.
+Think about how you are going to be presenting your data to your user.
+Then think about how you’ll search for that data.
+What you’re searching for should naturally be your primary key and the information you plan on presenting should be your columns.
+That’s it.
+Traditional, relational data models will have you think about third, fourth, etc normal forms before you ever even thing about what the UI will do.
+That is the complete opposite of designing data models in Cassandra.
+Remember, “Start with your query”.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dont_cross_the_hashes">Don’t cross the hashes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When retrieving your data, you want to target as small a hash value as possible.
+Remember the rows we inserted in the above example.
+The first row had a hash value of 72 and the second row had a hash value of 31.
+If we issues a read request that asked for those 2 rows to be returned, then we would potentially be asking all 4 nodes in the cluster to respond.
+It’s better to ask for smaller sets of data that are local to single nodes.
+Issue a pair of read requests; one for each of the 2 rows you’re after.
+It’s better to have 2 requests retrieving single rows, rather than single requests retrieving multiple rows.
+This may not seem like that big of a deal with 2 rows, but what if it were an IN clause with 20 or 50 rows.
+A simple request becomes a big drain on resources.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_misconceptions">Misconceptions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A misconception that I see is that people think that they should always try to make tables hold way more information than is necessary.
+The belief that a table should be used for many, many searches.
+The truth is that having many similar tables with similar data is a good thing in Cassandra.
+Limit the primary key to exactly what you’ll be searching with.
+If you plan on searching the data with a similar, but different criteria, then make it a separate table.
+There is no drawback for having the same data stored differently.
+Duplication of data is your friend in Cassandra.</p>
+</div>
+<div class="paragraph">
+<p>Another misconception is about conserving your writes.
+Cassandra writes out data to disk so much faster than any traditional relational database ever could.
+Because of this writes are cheap and should be used as often as possible.
+Don’t try to cache up data to send to the database for storage all at once.
+If you have a portion of the data, write it out.
+Don’t wait for the entire recored to be received from the application.
+If you need to store the same piece of data in 14 different tables, then write it out 14 times.
+There isn’t a handicap against multiple writes.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This post should help you understand a bit more about the basics of Cassandra data models.
+I’ve covered how you should distribute &amp; retrieve your data, and common pitfalls to avoid.
+With a bit of trial and error, you’ll be able to begin writing your own data models.</p>
+</div>
+</div>
+</div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2016-04-20</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://adamhutson.com/cassandra-data-model-basics/" data-title="Cassandra Data Model Basics" data-via="adamhutson"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://adamhutson.com/cassandra-data-model-basics/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://adamhutson.com/cassandra-data-model-basics/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/restoring-cassandra-data/" class="prev" rel="prev" title="Restoring Cassandra Data"><i class="fas fa-angle-left fa-fw"></i>Restoring Cassandra Data</a>
+            <a href="/update-your-cassandra-data-model-for-30/" class="next" rel="next" title="Update your Cassandra data model for 3.0">Update your Cassandra data model for 3.0<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div class="comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>

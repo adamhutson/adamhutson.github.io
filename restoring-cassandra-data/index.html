@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Restoring Cassandra Data | Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="Restoring Cassandra Data" />
+<meta property="og:description" content="If you’ve ever lost your production data or discovered that it had been corrupted, then you know the importance of being able to restore that data. Restoring your Cassandra data can be quick and painless. The following three methods will help you to gain a better understanding of what’s involved.
+ Before you can begin to restore data though you have to have data to restore. You are backing up your data, right?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/restoring-cassandra-data/" />
+<meta property="article:published_time" content="2016-04-08T00:00:00+00:00" />
+<meta property="article:modified_time" content="2016-04-08T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Restoring Cassandra Data"/>
+<meta name="twitter:description" content="If you’ve ever lost your production data or discovered that it had been corrupted, then you know the importance of being able to restore that data. Restoring your Cassandra data can be quick and painless. The following three methods will help you to gain a better understanding of what’s involved.
+ Before you can begin to restore data though you have to have data to restore. You are backing up your data, right?"/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/restoring-cassandra-data/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="prev" href="http://adamhutson.com/backing-up-cassandra-data/" /><link rel="next" href="http://adamhutson.com/cassandra-data-model-basics/" /><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Restoring Cassandra Data",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/adamhutson.com\/restoring-cassandra-data\/"
+        },"genre": "posts","wordcount":  982 ,
+        "url": "http:\/\/adamhutson.com\/restoring-cassandra-data\/","datePublished": "2016-04-08T00:00:00\x2b00:00","dateModified": "2016-04-08T00:00:00\x2b00:00","description": ""
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Restoring Cassandra Data</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2016-04-08>2016-04-08</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 982 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>5 min&nbsp;</div>
+        </div><div class="content" id="content"><div id="preamble">
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="/images/restore.jpg" alt="restore">
+</div>
+</div>
+<div class="paragraph">
+<p>If you’ve ever lost your production data or discovered that it had been corrupted, then you know the importance of being able to restore that data.
+Restoring your Cassandra data can be quick and painless.
+The following three methods will help you to gain a better understanding of what’s involved.</p>
+</div>
+<div class="paragraph">
+<p>Before you can begin to restore data though you have to have data to restore.
+You are backing up your data, right?
+If not, check out our post on backing up Cassandra data.
+Once you’re sure your data is safely backed up, then you can focus on how to restore it.</p>
+</div>
+<div class="paragraph">
+<p>Currently, Apache Cassandra provides three methods to restore data from a snapshot (Cassandra’s term for a backup):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Restart the service</p>
+</li>
+<li>
+<p>Refresh the data</p>
+</li>
+<li>
+<p>Use the sstableloader tool</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Each of these methods will ultimately restore data to a node.
+However, each has a different set of circumstances for when to use.
+It’s important to know when to use each.
+This post will describe each method in detail and what dictates the choice of each.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_restart_the_service">Restart the Service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>What is it:</strong>
+The first restore method involves restarting the Cassandra service.
+You’re essentially shutting down a node to replace all the bad data with the backed up data.</p>
+</div>
+<div class="paragraph">
+<p><strong>When to use it:</strong>
+Restarting the service is going to cover your most common situations for needing to restore data.
+This is for when you’ve got a node that has gone down, or has corrupted it’s data in some fashion.
+This is for the machine that has already been a Cassandra node and will be continue to be.</p>
+</div>
+<div class="paragraph">
+<p><strong>Steps to do it:</strong>
+A simple restart doesn’t do it all for you.
+You have to get rid of all the bad data first.
+This method will have you erase all traces of the bad data that was on the machine.
+Once it’s all cleaned up, you’ll move all the backed up data into place.
+Finally, a restart of the service will get all of the data back into the cluster.
+It also recreates all the necessary stuff that you cleaned up.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Stop the Cassandra service.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sudo service cassandra stop</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Run the nodetool drain command to flush all data from memtables to disk.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">nodetool drain</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Delete all the commit log files.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sudo rm -rf /var/lib/cassandra/commitlog/</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Delete all the data files from each of the &lt;keyspace&gt;/&lt;table&gt; directories.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sudo rm /var/lib/cassandra/data/&lt;keyspace&gt;/&lt;table&gt;/*.*</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Move all the backed up data files into the correct &lt;keyspace&gt;/&lt;table&gt; directories.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sudo mv /&lt;backups&gt;/&lt;keyspace&gt;/&lt;table&gt;/*.db /var/lib/cassandra/data/&lt;keyspace&gt;/&lt;table&gt;/</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Start the Cassandra service.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sudo service cassandra start</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_refresh_the_data">Refresh the Data</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>What is it:</strong>
+The second restore method is to move the backed up data files into place and using the multipurpose <code>nodetool</code> to refresh the cluster.
+The process involves swapping in the sstable data file(s) directly into the keyspace/column family directories and telling Cassandra to reload the new files.</p>
+</div>
+<div class="paragraph">
+<p><strong>When to use it:</strong>
+This method is for when you have a brand new node to replace a node that has been unrecoverable.
+There was never any trace of existing data, so all you’re doing is putting the backed up data into the correct directories and issuing the refresh command via nodetool.</p>
+</div>
+<div class="paragraph">
+<p><strong>Steps to do it:</strong>  This is the easiest method to restore data.  Assuming you’ve created a new node that is running a clean install of Cassandra.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Recreate the schema on the clean Cassandra install using the backed up schema file (you are backing up your schema, right?).</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">cqlsh -E my_schema_file.cql</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Move all the backed up data files into the correct &lt;keyspace&gt;/&lt;table&gt; directories.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sudo mv /&lt;backups&gt;/&lt;keyspace&gt;/&lt;table&gt;/*.db /var/lib/cassandra/data/&lt;keyspace&gt;/&lt;table&gt;/</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Run the nodetool refresh command to tell Cassandra to reload it’s data files.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">nodetool refresh</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sstableloader">SSTableLoader</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>What is it:</strong>
+The third, and final, restore method is to use the sstableloader tool.
+This tool is included in the Apache distribution of Cassandra.
+Its purpose is, as it sounds, to load Cassandra sstable(s) into the cluster.
+It’s not quick and it takes up a lot of additional disk space, but it does work.</p>
+</div>
+<div class="paragraph">
+<p><strong>When to use it:</strong>
+There is really only one or two reasons to follow this route for restoring data.
+The first reason would be if you wanted to change from using tokens in an existing cluster and migrate the same data to use vnodes in a new cluster.
+The second reason would be if you wished to restore your data into a cluster that has either a different replication factor or a different number of nodes that cluster that the data was backed up from.
+Granted, neither of these situations are meant to recover data.
+However, it’s still a valid way to restore backed up data</p>
+</div>
+<div class="paragraph">
+<p><strong>Steps to do it:</strong>
+This is a very time-consuming task as it involves reading each and every record in the sstable(s) and then writing each of them out to the correct node as dictated by the configured replication factor.
+The records will follow the same write path as if the data were being written for the first time.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Recreate the schema on the clean Cassandra install using the backed up schema file (you are backing up your schema, right?).</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">cqlsh -E my_schema_file.cql</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Run the sstableloader command from each of the locations of the backed up data files.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sstableloader /&lt;backups&gt;/&lt;keyspace&gt;/&lt;table&gt;/</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Repeat step 2 for each keyspace/table combination that you are restoring.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This post has walked you through the three ways to restore data into Cassandra.
+You should now be able to assess when each method should be used.
+As well as how to execute each method.
+As great as it is to know who to do each of these, you need to test your knowledge.
+Don’t just rely on reading a post and think you’ll know what to do when the crisis occurs.
+Go out and test each of the scenarios out.
+Make sure to time your efforts.
+One day, you’ll be glad that you can answer your boss when you’re asked “how long before we’re back online?”.</p>
+</div>
+</div>
+</div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2016-04-08</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://adamhutson.com/restoring-cassandra-data/" data-title="Restoring Cassandra Data" data-via="adamhutson"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://adamhutson.com/restoring-cassandra-data/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://adamhutson.com/restoring-cassandra-data/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/backing-up-cassandra-data/" class="prev" rel="prev" title="Backing Up Cassandra Data"><i class="fas fa-angle-left fa-fw"></i>Backing Up Cassandra Data</a>
+            <a href="/cassandra-data-model-basics/" class="next" rel="next" title="Cassandra Data Model Basics">Cassandra Data Model Basics<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div class="comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>

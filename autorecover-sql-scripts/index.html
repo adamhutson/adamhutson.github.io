@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Autorecover Sql Scripts | Adam Hutson</title>
+        <meta name="Description" content=""><meta property="og:title" content="Autorecover Sql Scripts" />
+<meta property="og:description" content="This morning, when I came into work, I discovered that Windows Update had graciously restarted my machine for me. No big deal. But wait, then I realized I had some SQL work that I hadn&#8217;t saved yet. NOOOOOO!!! I know, I know, &#8230;&#8203; always save your work. But yesterday, I didn&#8217;t. So you can imagine how irritated I was to discover that all of that hard work was gone. Or so I thought." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://adamhutson.com/autorecover-sql-scripts/" />
+<meta property="article:published_time" content="2010-06-16T00:00:00+00:00" />
+<meta property="article:modified_time" content="2010-06-16T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Autorecover Sql Scripts"/>
+<meta name="twitter:description" content="This morning, when I came into work, I discovered that Windows Update had graciously restarted my machine for me. No big deal. But wait, then I realized I had some SQL work that I hadn&#8217;t saved yet. NOOOOOO!!! I know, I know, &#8230;&#8203; always save your work. But yesterday, I didn&#8217;t. So you can imagine how irritated I was to discover that all of that hard work was gone. Or so I thought."/>
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#da532c">
+<link rel="canonical" href="http://adamhutson.com/autorecover-sql-scripts/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="prev" href="http://adamhutson.com/free-ebook-defensive-database-programming/" /><link rel="next" href="http://adamhutson.com/too-many-todos-and-not-enough-dones/" /><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Autorecover Sql Scripts",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/adamhutson.com\/autorecover-sql-scripts\/"
+        },"genre": "posts","wordcount":  286 ,
+        "url": "http:\/\/adamhutson.com\/autorecover-sql-scripts\/","datePublished": "2010-06-16T00:00:00\x2b00:00","dateModified": "2010-06-16T00:00:00\x2b00:00","description": ""
+    }
+    </script></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {window.isDark = '' === 'dark';} else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title animated bounceIn">
+            <a href="/">Adam Hutson</a>
+        </div>
+        <div class="menu"><a class="menu-item" href="/posts/">Posts</a><a class="menu-item" href="/talks/">Talks</a><a class="menu-item" href="/resume/">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw "></i>
+            </a>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-wrapper">
+        <div class="header-container">
+            <div class="header-title animated bounceIn">
+                <a href="/">Adam Hutson</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/talks/" title="">Talks</a><a class="menu-item" href="/resume/" title="">Resume</a><a href="javascript:void(0);" class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    window.desktopHeaderMode =  null ;
+    window.mobileHeaderMode =  null ;
+</script>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Autorecover Sql Scripts</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Adam</a>
+</span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2010-06-16>2010-06-16</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 286 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>2 min&nbsp;</div>
+        </div><div class="content" id="content"><div class="paragraph">
+<p>This morning, when I came into work, I discovered that Windows Update had graciously restarted my machine for me.
+No big deal.
+But wait, then I realized I had some SQL work that I hadn&#8217;t saved yet.
+NOOOOOO!!!
+I know, I know, &#8230;&#8203; always save your work.
+But yesterday, I didn&#8217;t.
+So you can imagine how irritated I was to discover that all of that hard work was gone.
+Or so I thought.</p>
+</div>
+<div class="paragraph">
+<p>A co-worker heard me getting mad at myself and chimed in that SQL Server Management Studio (SSMS) has an autorecover feature.
+WHAT!?
+Yep, when ever you start typing a query in SSMS, a file is automatically created and saves itself every 5 minutes.
+The location of this AutoRecover document is located in "\My Documents\SQL Server Management Studio\Backup Files\Solution [n]\".
+The [n] represents an integer that corresponds to how many SSMS IDE windows you have open.
+I only had one IDE open, with two query windows open, so I had a "\Solution 1\" folder with two files in it: <sub>AutoRecover.</sub>vs47E8.sql &amp; <sub>AutoRecover.</sub>vsD5FD.sql.</p>
+</div>
+<div class="paragraph">
+<p>Try it out.
+Open the folder mentioned above and open a new SSMS IDE and Query window and start typing out a quick SELECT.
+After about 5 minutes, you will see a new file prefixed with "<sub>AutoRecover.</sub>vsXXXX.sql".
+The X&#8217;s are alphanumeric values that change with every file.
+The new file will get auto saved in 5 min increments from there on.
+When you close SSMS or a query window and it asks you if you want to save, click No, and watch the auto-generated file delete itself.</p>
+</div>
+<div class="paragraph">
+<p>Wow, that was a HUGE relief.
+SSMS 2005 and higher has this feature built in.
+Thank you Microsoft for saving me from my own carelessness.</p>
+</div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2010-06-16</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://adamhutson.com/autorecover-sql-scripts/" data-title="Autorecover Sql Scripts" data-via="adamhutson"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://adamhutson.com/autorecover-sql-scripts/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://adamhutson.com/autorecover-sql-scripts/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/free-ebook-defensive-database-programming/" class="prev" rel="prev" title="Free Ebook: Defensive Database Programming"><i class="fas fa-angle-left fa-fw"></i>Free Ebook: Defensive Database Programming</a>
+            <a href="/too-many-todos-and-not-enough-dones/" class="next" rel="next" title="Too Many Todos And Not Enough Dones">Too Many Todos And Not Enough Dones<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div class="comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2009 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top animated faster" id="dynamic-to-top">
+            <span>&nbsp;</span>
+        </a><script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightGallery(document.getElementById('content'), {
+                selector: '.lightgallery',
+                speed: 400,
+                hideBarsDelay: 2000,
+                thumbnail: true,
+                exThumbImage: 'data-thumbnail',
+                thumbWidth: 80,
+                thumbContHeight: 80,
+            });
+        });
+    </script><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><script src="/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/js/theme.min.js"></script></body>
+</html>
